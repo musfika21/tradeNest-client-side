@@ -1,6 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 @import "tailwindcss";
 
-bg-image{
-    background-image: url('assets/auth-bg.png');
+.font {
+    font-family: "Lato", sans-serif;
+}
+
+.logo-style {
+    background: linear-gradient(90deg, #460911, #6F0E18, #b51a2d98);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+}
+
+.bg-image{
+    background-image: url('assets/bg.png');
     background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
