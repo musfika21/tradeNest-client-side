@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+bg-image{
+    background-image: url('assets/auth-bg.png');
+    background-size: cover;
+}
