@@ -52,19 +52,31 @@ const Footer = () => {
                         </div>
                     </div>
                     <div className="space-y-3">
-                            <div className="uppercase text-center md:text-lg">Social media</div>
-                            <div className="flex justify-center space-x-3 md:space-x-5">
-                                <a href="https://www.facebook.com/" title="Facebook" target='_blank' className="flex items-center p-1">
-                                    <FaFacebook className='w-5 h-5 md:w-8 md:h-8 text-[#460911] hover:text-[#8a0a19af] transition-all delay-75' />
-                                </a>
-                                <a href="https://x.com/" title="Twitter" target='_blank' className="flex items-center p-1">
-                                    <FaTwitter className='w-5 h-5 md:w-8 md:h-8 text-[#460911] hover:text-[#8A0A19af]' />
-                                </a>
-                                <a href="https://www.instagram.com/" title="Instagram" target='_blank' className="flex items-center p-1">
-                                    <FaInstagram className='w-5 h-5 md:w-8 md:h-8 text-[#460911] hover:text-[#8A0A19af]' />
-                                </a>
-                            </div>
+                        <div className="uppercase text-center md:text-lg">Social media</div>
+                        <div className="flex justify-center space-x-3 md:space-x-5">
+                            {/* one */}
+                            <a href="https://www.facebook.com/" title="Facebook" target='_blank' className="flex items-center p-1">
+                                <div className="group relative inline-flex items-center justify-center w-8 h-8 md:w-11 md:h-11 transition-all duration-300">
+                                    <span className="absolute w-full h-full scale-0 group-hover:scale-125 border-2 border-[#8a0a19af] rounded-full transition-transform duration-300 ease-in-out"></span>
+                                    <FaFacebook className="relative z-10 w-5 h-5 md:w-8 md:h-8 text-[#460911] transition-all duration-300 group-hover:text-[#8a0a19af]" />
+                                </div>
+                            </a>
+                            {/* two */}
+                            <a href="https://x.com/" title="Twitter" target='_blank' className="flex items-center p-1">
+                                <div className="group relative inline-flex items-center justify-center w-8 h-8 md:w-11 md:h-11 transition-all duration-300">
+                                    <span className="absolute w-full h-full scale-0 group-hover:scale-125 border-2 border-[#8a0a19af] rounded-full transition-transform duration-300 ease-in-out"></span>
+                                    <FaTwitter className="relative z-10 w-5 h-5 md:w-8 md:h-8 text-[#460911] transition-all duration-300 group-hover:text-[#8a0a19af]" />
+                                </div>
+                            </a>
+                            {/* three */}
+                            <a href="https://www.instagram.com/" title="Instagram" target='_blank' className="flex items-center p-1">
+                                <div className="group relative inline-flex items-center justify-center w-8 h-8 md:w-11 md:h-11 transition-all duration-300">
+                                    <span className="absolute w-full h-full scale-0 group-hover:scale-125 border-2 border-[#8a0a19af] rounded-full transition-transform duration-300 ease-in-out"></span>
+                                    <FaInstagram className="relative z-10 w-5 h-5 md:w-8 md:h-8 text-[#460911] transition-all duration-300 group-hover:text-[#8a0a19af]" />
+                                </div>
+                            </a>
                         </div>
+                    </div>
                 </div>
                 <div className="py-6 text-sm text-center text-[#8A0A19]">© 2025 Trade Nest LTD. All rights reserved.</div>
             </footer>

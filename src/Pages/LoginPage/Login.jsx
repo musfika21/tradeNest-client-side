@@ -1,56 +1,74 @@
 import React from 'react';
-import CustomizedButton from '../../Shared/CustomizedButton';
-import SocialLogins from '../../Shared/SocialLogins';
+import logo from '../../assets/logo.png';
+import { FaGoogle } from 'react-icons/fa';
+import { AiOutlineEye } from 'react-icons/ai';
 import { Link } from 'react-router';
+import SocialLogins from '../../Shared/SocialLogins';
+import CustomizedButton from '../../Shared/CustomizedButton';
+import { IoPerson } from 'react-icons/io5';
 
 const Login = () => {
     return (
-        <div>
-            <div className='flex justify-center bg-image'>
-                        <div className="w-full max-w-11/12 mx-auto p-8 space-y-3 rounded-sm my-15 md:my-10 bg-black/20 text-white">
-                            <h1 className="text-xl font-bold text-center">Register Now!</h1>
-                            <form className="space-y-4 md:space-y-6">
-                                {/* name field */}
-                                <div className="space-y-1 text-sm">
-                                    <label className="block ">Enter Your Name: </label>
-                                    <input type="text" name="name" placeholder="Enter Name" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-                                </div>
-                                {/* email field */}
-                                <div className="space-y-1 text-sm">
-                                    <label className="block ">Enter Your Email: </label>
-                                    <input type="email" name="email" placeholder="Enter Email" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-                                </div>
-                                {/* photo URL */}
-                                <div className="space-y-1 text-sm">
-                                    <label className="block ">Enter Your Photo URL: </label>
-                                    <input type="url" name="photo" placeholder="Enter Photo URL" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-                                </div>
-                                {/* password field */}
-                                <div className="space-y-1 text-sm">
-                                    <label className="block">Enter A Password: </label>
-                                    <input type="password" name="password" placeholder="Enter Password" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-                                </div>
-                                {/* privacy policy */}
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="form-checkbox" />
-                                    <span class="block ml-2 text-xs font-medium cursor-pointer">Agree to Privacy Policy</span>
-                                </label>
-                                {/* button */}
-                                <div className='flex justify-center'>
-                                    <CustomizedButton text="Register" type="submit"></CustomizedButton>
-                                </div>
-                            </form>
-                            <div className="flex items-center pt-4 space-x-1">
-                                <div className="flex-1 h-px sm:w-16 bg-white"></div>
-                                <p className="px-3 text-sm ">OR</p>
-                                <div className="flex-1 h-px sm:w-16 bg-white"></div>
-                            </div>
-                            <SocialLogins/>
-                            <p className="text-xs text-center sm:px-6">Don't have an account?
-                                <Link className="underline hover:text-[#f36c7c]"> Sign up</Link>
-                            </p>
-                        </div>
-                    </div >
+        <div className="min-h-screen flex items-center justify-center bg-[#2D0509] text-white py-6">
+            <div className="w-full max-w-sm p-6 space-y-6">
+                {/* Logo */}
+                <div className="flex justify-center mb-4">
+                    <img className='w-20 h-20 lg:h-25 lg:w-25' src={logo} alt="logo of TradeNest" />
+                </div>
+
+                {/* Welcome Text */}
+                <div className="text-center space-y-2">
+                    <h1 className="text-2xl font-semibold">Welcome back</h1>
+                    <p className="text-sm">Let's continue your journey.</p>
+                </div>
+
+                {/* Google login */}
+                <SocialLogins />
+
+                {/* Divider */}
+                <div className="flex items-center text-sm">
+                    <hr className="flex-grow border-white" />
+                    <span className="mx-2">or continue with</span>
+                    <hr className="flex-grow border-white" />
+                </div>
+
+                {/* login form */}
+                <form className='space-y-4'>
+                    {/* Email Input */}
+                    <div className="relative">
+                        <input type="text" name="name" placeholder="Enter Name" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
+
+                        <IoPerson className="absolute right-5 top-1/2 transform -translate-y-1/2" />
+
+                    </div>
+
+                    {/* Password Input */}
+                    <div className="relative">
+                        <input
+                            type="password"
+                            placeholder="Enter your password"
+                            className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none"
+                        />
+                        <AiOutlineEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />
+                    </div>
+
+                    {/* Forgot password */}
+                    <div className="text-right text-xs hover:underline cursor-pointer">
+                        Forgot password?
+                    </div>
+
+                    {/* Sign In Button */}
+                    <CustomizedButton text="Login" type="submit" />
+                </form>
+
+                {/* Sign Up Link */}
+                <p className="text-xs md:text-base text-center sm:px-6">
+                    Don’t have an account?{" "}
+                    <Link to="/register-user" className="underline hover:text-[#f36c7c]">
+                        Sign up
+                    </Link>
+                </p>
+            </div>
         </div>
     );
 };
