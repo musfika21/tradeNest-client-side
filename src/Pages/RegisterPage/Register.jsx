@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import CustomizedButton from '../../Shared/CustomizedButton';
 import SocialLogins from '../../Shared/SocialLogins';
 import { Link, useNavigate } from 'react-router';
-import { IoPerson } from 'react-icons/io5';
+import { IoEye, IoEyeOff, IoPerson } from 'react-icons/io5';
 import welcome from '../../assets/LottieFiles/welcome.json'
 import Lottie from 'react-lottie';
 import { MdEmail } from 'react-icons/md';
@@ -15,6 +15,7 @@ const Register = () => {
 
     const { createUser, updateUserInfo, setUser } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     // validation of the password
@@ -130,15 +131,22 @@ const Register = () => {
                             <div className="space-y-1 text-sm">
                                 <label className="block">Enter A Password: </label>
                                 <div className="relative">
-                                    <input type="password" name="password" placeholder="Enter Password" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-
-                                    <IoPerson className="absolute right-5 top-1/2 transform -translate-y-1/2" />
-
+                                    <input 
+                                        type={showPassword ? "text" : "password"}
+                                        name="password" placeholder="Enter Password" 
+                                        className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
+                                    <button onClick={() => setShowPassword(!showPassword)}>
+                                        {
+                                            showPassword ?
+                                                <IoEyeOff className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" /> :
+                                                <IoEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />
+                                        }
+                                    </button>
                                 </div>
                             </div>
                             {/* privacy policy */}
-                            <label class="flex items-center">
-                                <input type="checkbox" class="form-checkbox" />
+                            <label className="flex items-center">
+                                <input type="checkbox" className="form-checkbox" />
                                 <span class="block ml-2 text-xs lg:text-base font-medium cursor-pointer">Agree to Privacy Policy</span>
                             </label>
                             {

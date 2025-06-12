@@ -1,13 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '../../assets/logo.png';
 import { FaGoogle } from 'react-icons/fa';
-import { AiOutlineEye } from 'react-icons/ai';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import SocialLogins from '../../Shared/SocialLogins';
 import CustomizedButton from '../../Shared/CustomizedButton';
-import { IoPerson } from 'react-icons/io5';
+import { IoEye, IoEyeOff, IoPerson } from 'react-icons/io5';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import useAuth from '../../CustomHooks/UseAuth';
 
 const Login = () => {
+
+    const { loginUser } = useAuth();
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate()
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+
+        const { email, password, ...userProfile } = Object.fromEntries(formData);
+        console.log(email)
+        loginUser(email, password)
+            .then((result) => {
+                Swal.fire({
+                    title: "Successfully Logged in",
+                    icon: "success",
+                    draggable: true
+                });
+                navigate(location.state || "/");
+            })
+
+            .catch((error) => {
+                toast.error(`Something Wrong${error.message}`, {
+                    position: "top-right",
+                    className: "bg-red-100 text-red-800 border border-red-300 font-medium rounded-lg shadow-md px-4 py-3",
+                    icon: "❌",
+                });
+            })
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-[#2D0509] text-white py-6">
             <div className="w-full max-w-sm p-6 space-y-6">
@@ -33,7 +66,7 @@ const Login = () => {
                 </div>
 
                 {/* login form */}
-                <form className='space-y-4'>
+                <form onSubmit={handleLogin} className='space-y-4'>
                     {/* Email Input */}
                     <div className="relative">
                         <input type="text" name="name" placeholder="Enter Name" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
@@ -45,16 +78,23 @@ const Login = () => {
                     {/* Password Input */}
                     <div className="relative">
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             placeholder="Enter your password"
                             className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none"
                         />
-                        <AiOutlineEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />
+                        <button onClick={() => setShowPassword(!showPassword)}>
+                            {
+                                showPassword ?
+                                    <IoEyeOff className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" /> :
+                                    <IoEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />
+                            }
+                        </button>
                     </div>
-
                     {/* Forgot password */}
                     <div className="text-right text-xs hover:underline cursor-pointer">
-                        Forgot password?
+                        <Link to='/reset-Password'>
+                            Forgot password?
+                        </Link>
                     </div>
 
                     {/* Sign In Button */}

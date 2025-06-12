@@ -6,11 +6,11 @@
 }
 
 .logo-style {
-    background: linear-gradient(90deg, #460911, #6F0E18, #b51a2d98);
+    background: linear-gradient(90deg, #460911ca, #9b111f, #b51a2d98);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-weight: bold;
 }
+
 
 .bg-image{
     background-image: url('assets/bg.png');
