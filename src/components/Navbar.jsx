@@ -103,6 +103,7 @@ const Navbar = () => {
 
   const { user, logout, theme, toggleTheme } = useAuth();
   // console.log(user)
+  // console.log(user?.providerData[0].displayName)
   const [open, setOpen] = useState(false);
   const [sidebar, setSideBar] = useState(false);
 
@@ -117,7 +118,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="w-full bg-white fixed left-0 right-0 shadow-2xl font">
+    <div className="w-full bg-white fixed left-0 right-0 shadow-md font z-1000">
       <nav className="flex justify-between mx-4 items-center py-3 z-20">
 
         {/* LOGO */}
@@ -160,12 +161,12 @@ const Navbar = () => {
                 user?.photoURL ? (
                   <img
                     className="w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13 lg:w-15 lg:h-15 rounded-full border-2 lg:border-3 border-[#6F0E18]"
-                    src={user.photoURL}
+                    src={user?.photoURL}
                     alt="profile picture"
                   />
                 ) : (
                   <IoPersonCircleOutline
-                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-24 xl:h-24"
+                    className="w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13 lg:w-15 lg:h-15"
                   />
                 )
               }

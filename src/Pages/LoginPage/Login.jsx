@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../../assets/logo.png';
 import { FaGoogle } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import SocialLogins from '../../Shared/SocialLogins';
 import CustomizedButton from '../../Shared/CustomizedButton';
 import { IoEye, IoEyeOff, IoPerson } from 'react-icons/io5';
@@ -13,7 +13,9 @@ const Login = () => {
 
     const { loginUser } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const location = useLocation();
+    console.log(location)
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -21,7 +23,6 @@ const Login = () => {
         const formData = new FormData(form);
 
         const { email, password, ...userProfile } = Object.fromEntries(formData);
-        console.log(email)
         loginUser(email, password)
             .then((result) => {
                 Swal.fire({
@@ -31,7 +32,6 @@ const Login = () => {
                 });
                 navigate(location.state || "/");
             })
-
             .catch((error) => {
                 toast.error(`Something Wrong${error.message}`, {
                     position: "top-right",
@@ -69,10 +69,8 @@ const Login = () => {
                 <form onSubmit={handleLogin} className='space-y-4'>
                     {/* Email Input */}
                     <div className="relative">
-                        <input type="text" name="name" placeholder="Enter Name" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-
+                        <input type="email" name="email" placeholder="Enter Email" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
                         <IoPerson className="absolute right-5 top-1/2 transform -translate-y-1/2" />
-
                     </div>
 
                     {/* Password Input */}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CustomizedButton from '../../Shared/CustomizedButton';
 import SocialLogins from '../../Shared/SocialLogins';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { IoEye, IoEyeOff, IoPerson } from 'react-icons/io5';
 import welcome from '../../assets/LottieFiles/welcome.json'
 import Lottie from 'react-lottie';
@@ -13,10 +13,11 @@ import useAuth from '../../CustomHooks/UseAuth';
 
 const Register = () => {
 
-    const { createUser, updateUserInfo, setUser } = useAuth();
+    const { createUser } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     // validation of the password
     const validationOfPassword = (password) => {
@@ -35,10 +36,9 @@ const Register = () => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
-
         const { email, password, name, photo, ...userProfile } = Object.fromEntries(formData)
 
-        // console.log(email, password, userProfile, name, photo)
+        console.log(email, password, userProfile, name, photo)
         const validatePassword = validationOfPassword(password);
         if (validatePassword) {
             setErrorMessage(validatePassword);
@@ -47,22 +47,12 @@ const Register = () => {
         // create user
         createUser(email, password)
             .then((result) => {
-                const user = result.user;
-
-                // Update user profile
-                updateUserInfo(user, { displayName: name, photoURL: photo })
-                    .then(() => {
-                        setUser((currentUser) => {
-                            currentUser.displayName = name;
-                            currentUser.photoURL = photo;
-                            navigate('/');
-                            Swal.fire({
-                                title: "Successfully Registered",
-                                icon: "success",
-                                draggable: true
-                            });
-                        })
-                    })
+                Swal.fire({
+                    title: "Successfully Registered",
+                    icon: "success",
+                    draggable: true
+                });
+                navigate(location.state || "/");
             })
             .catch((error) => {
                 setErrorMessage(error.message);
@@ -131,9 +121,9 @@ const Register = () => {
                             <div className="space-y-1 text-sm">
                                 <label className="block">Enter A Password: </label>
                                 <div className="relative">
-                                    <input 
+                                    <input
                                         type={showPassword ? "text" : "password"}
-                                        name="password" placeholder="Enter Password" 
+                                        name="password" placeholder="Enter Password"
                                         className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
                                     <button onClick={() => setShowPassword(!showPassword)}>
                                         {

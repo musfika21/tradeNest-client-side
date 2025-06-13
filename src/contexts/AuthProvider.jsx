@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
     createUserWithEmailAndPassword,
-    GithubAuthProvider,
     GoogleAuthProvider,
     onAuthStateChanged,
     sendPasswordResetEmail,
@@ -45,7 +44,7 @@ const AuthProvider = ({ children }) => {
 
     // create a user with email and password
     const createUser = (email, password) => {
-        setLoading(true)
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password)
     };
 
@@ -90,7 +89,7 @@ const AuthProvider = ({ children }) => {
         return () => {
             unsubscribe();
         }
-    })
+    }, [])
 
     // User Info
     const userInfo = {
