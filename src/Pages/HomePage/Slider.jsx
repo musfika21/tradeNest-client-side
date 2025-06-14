@@ -25,7 +25,7 @@ const slides = [
 
 const Slider = () => {
     return (
-        <div className="h-[60vh] md:h-[70vh] lg:h-[80vh] w-full overflow-hidden rounded-xl shadow-xl relative">
+        <div className="h-[60vh] md:h-[70vh] lg:h-[80vh] w-full overflow-hidden shadow-xl relative">
             <AwesomeSlider
                 className="aws-btn"
                 bullets={false}

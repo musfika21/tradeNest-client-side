@@ -30,7 +30,7 @@ const NavLinks = () => (
     <li className="text-lg flex items-center space-x-2">
       <NavLink
         className={({ isActive }) => (isActive ? 'underline underline-offset-8 text-[#9b111f]' : '')}
-        to="/categories"
+        to="/category"
       >
         {({ isActive }) => (
           <div className="flex items-center">

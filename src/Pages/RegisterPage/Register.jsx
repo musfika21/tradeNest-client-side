@@ -38,7 +38,7 @@ const Register = () => {
         const formData = new FormData(form);
         const { email, password, name, photo, ...userProfile } = Object.fromEntries(formData)
 
-        console.log(email, password, userProfile, name, photo)
+        // console.log(email, password, userProfile, name, photo)
         const validatePassword = validationOfPassword(password);
         if (validatePassword) {
             setErrorMessage(validatePassword);
@@ -128,8 +128,8 @@ const Register = () => {
                                     <button onClick={() => setShowPassword(!showPassword)}>
                                         {
                                             showPassword ?
-                                                <IoEyeOff className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" /> :
-                                                <IoEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />
+                                                <IoEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" /> : 
+                                                <IoEyeOff className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />       
                                         }
                                     </button>
                                 </div>

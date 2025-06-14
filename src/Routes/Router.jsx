@@ -7,11 +7,13 @@ import Register from '../Pages/RegisterPage/Register';
 import NotFound from '../Pages/NotFound';
 import ResetPassword from '../Pages/ResetPassword';
 import PrivateRoutes from './PrivateRoutes';
-import Categories from '../Pages/Categories';
-import AllProducts from '../Pages/AllProducts';
 import AddProduct from '../Pages/AddProduct';
 import MyProducts from '../Pages/MyProducts';
 import Cart from '../Pages/Cart';
+import Categories from '../Pages/Category/Categories';
+import AllProducts from '../Pages/allProduct/AllProducts';
+import Details from '../Pages/allProduct/Details';
+import Loader from '../components/Loader';
 
 const Router = createBrowserRouter([
     {
@@ -35,12 +37,18 @@ const Router = createBrowserRouter([
                 Component: ResetPassword
             },
             {
-                path: '/categories',
+                path: '/category',
                 Component: Categories
             },
             {
                 path: '/all-Products',
                 element: <PrivateRoutes><AllProducts/></PrivateRoutes>
+            },
+            {
+                path: '/product-Details/:id',
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_SERVER_API}/products/${params.id}`),
+                hydrateFallbackElement: <Loader />,
+                element: <PrivateRoutes><Details/></PrivateRoutes>
             },
             {
                 path: '/add-Product',
