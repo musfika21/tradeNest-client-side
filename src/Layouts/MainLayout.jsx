@@ -8,7 +8,7 @@ const MainLayout = () => {
     return (
         <div>
             <Navbar/>
-            <div className='pt-19 min-h-[calc(100vh-273px)] font'>
+            <div className='pt-16 xl:pt-19 min-h-[calc(100vh-273px)] font'>
                 <Outlet/>
                 <ToastContainer/>
             </div>

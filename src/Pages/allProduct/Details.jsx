@@ -1,156 +1,108 @@
-
-import Modal from 'react-modal';
-Modal.setAppElement('#root');
 import React, { useState } from 'react';
-import { useLoaderData } from 'react-router';
-import Swal from 'sweetalert2';
+import { useLoaderData, useNavigate } from 'react-router';
+import Modal from 'react-modal';
 import axios from 'axios';
 import useAuth from '../../CustomHooks/UseAuth';
+import { toast } from 'react-toastify';
+
+Modal.setAppElement('#root');
 
 const Details = () => {
     const product = useLoaderData();
-    console.log(product)
+    const { _id, name, photo, main_quantity, minimum_selling_quantity, brand, price, category, description, rating } = product;
+    const navigate = useNavigate();
     const { user } = useAuth();
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [buyQuantity, setBuyQuantity] = useState(1);
-
-    const {
-        _id,
-        name,
-        brand,
-        category,
-        photo,
-        description,
-        rating,
-        price,
-        main_quantity,
-        minimum_selling_quantity,
-    } = product;
-
-    const toggleModal = () => setIsOpen(!isOpen);
-
-    const handleQuantity = (type) => {
-        setBuyQuantity(prev =>
-            type === 'inc' ? prev + 1 : Math.max(1, prev - 1)
-        );
-    };
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [buyQuantity, setBuyQuantity] = useState(product.minimum_selling_quantity);
 
     const handleBuy = async () => {
-        if (buyQuantity < minimum_selling_quantity) {
-            return Swal.fire({
-                icon: 'error',
-                title: 'Minimum Quantity Required',
-                text: `You must buy at least ${minimum_selling_quantity} units.`,
-            });
-        }
-
-        if (buyQuantity > main_quantity) {
-            return Swal.fire({
-                icon: 'error',
-                title: 'Insufficient Stock',
-                text: `Only ${main_quantity} units available.`,
-            });
+        if (buyQuantity < product.minimum_selling_quantity) {
+            toast.error(`Minimum selling quantity is ${product.minimum_selling_quantity}`);
+            return;
         }
 
         try {
-            await axios.patch(`${import.meta.env.VITE_SERVER_API}/products/${_id}`, {
-                quantity: buyQuantity,
+            const res = await axios.patch(`/products/${product._id}`, {
+                $inc: { main_quantity: -buyQuantity }
             });
-            Swal.fire('Success', 'Purchase completed!', 'success');
-            toggleModal();
+
+            toast.success('Purchase successful!');
+            setModalIsOpen(false);
+            navigate('/');
         } catch (err) {
-            Swal.fire('Error', 'Purchase failed. Try again.', 'error');
+            console.error(err);
+            toast.error('Something went wrong.');
         }
     };
 
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg my-10">
-            <div className="grid md:grid-cols-2 gap-8">
-                <img src={photo} alt={name} className="w-full h-auto rounded-lg" />
-                <div>
-                    <h2 className="text-3xl font-bold">{name}</h2>
-                    <p className="text-gray-600 mt-2">{description}</p>
-                    <p className="mt-4"><strong>Brand:</strong> {brand}</p>
-                    <p><strong>Category:</strong> {category}</p>
-                    <p><strong>Rating:</strong> {rating} / 5</p>
-                    <p><strong>Price:</strong> ${price}</p>
-                    <p><strong>Available Quantity:</strong> {main_quantity}</p>
-                    <p><strong>Minimum Purchase:</strong> {minimum_selling_quantity}</p>
-                    <button
-                        onClick={toggleModal}
-                        className="mt-6 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-                    >
-                        Buy Now
-                    </button>
-                </div>
-            </div>
-
-            {/* Modal */}
-            <Modal
-                isOpen={isOpen}
-                onRequestClose={toggleModal}
-                contentLabel="Buy Product Modal"
-                className="max-w-md mx-auto mt-20 bg-white p-6 rounded-lg shadow-lg outline-none"
-                overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start z-50"
-            >
-                <h3 className="text-xl font-bold mb-4">Checkout</h3>
-
-                <div className="mb-4">
-                    <label className="font-medium">Name</label>
-                    <input
-                        type="text"
-                        value={user?.displayName || ''}
-                        disabled
-                        className="w-full border p-2 rounded bg-gray-100"
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="font-medium">Email</label>
-                    <input
-                        type="email"
-                        value={user?.email || ''}
-                        disabled
-                        className="w-full border p-2 rounded bg-gray-100"
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="font-medium">Quantity</label>
-                    <div className="flex items-center gap-2">
+        <div className='bg-[#fef1f1]'>
+            <div className="lg:w-5xl xl:w-6xl mx-auto py-10 px-4 border-2 border-gray-100">
+                <div className="flex flex-col md:flex-row gap-4 items-center p-5 bg-white rounded-md shadow-lg overflow-hidden">
+                    <div className='flex-1'>
+                        <img src={product.photo} alt={product.name} className="xl:w-full xl:h-full object-cover" />
+                    </div>
+                    <div className="lg:p-6 flex-1">
+                        <h2 className="md:text-xl lg:text-2xl xl:text-3xl font-bold mb-7">{product.name}</h2>
+                        <div className='flex justify-between'>
+                            <div>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Brand:</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Category:</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Rating:</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Available Quantity:</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-4 font-medium">Minimum Selling Quantity:</p>
+                            </div>
+                            <div className='lg:mr-5'>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{product.brand}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{product.category}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{product.rating}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{product.main_quantity}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-4 font-bold">{product.minimum_selling_quantity}</p>
+                            </div>
+                        </div>
+                        <div className='border border-gray-200'></div>
+                        <p className="text-xs md:text-sm lg:text-base mt-4">{product.description}</p>
                         <button
-                            onClick={() => handleQuantity('dec')}
-                            className="px-3 py-1 bg-red-500 text-white rounded"
+                            onClick={() => setModalIsOpen(true)}
+                            className="mt-6 bg-[#6F0E18] hover:bg-[#8a0a19] text-white text-xs sm:text-sm py-1 px-4 rounded-sm font-medium text-center cursor-pointer"
                         >
-                            -
-                        </button>
-                        <span className="px-4">{buyQuantity}</span>
-                        <button
-                            onClick={() => handleQuantity('inc')}
-                            className="px-3 py-1 bg-green-500 text-white rounded"
-                        >
-                            +
+                            Buy
                         </button>
                     </div>
                 </div>
 
-                <div className="flex justify-end gap-4 mt-6">
-                    <button
-                        onClick={toggleModal}
-                        className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                    >
-                        Cancel
-                    </button>
+                <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={() => setModalIsOpen(false)}
+                    contentLabel="Buy Product"
+                    className="bg-white p-6 max-w-md mx-auto mt-20 rounded-lg shadow-xl outline-none"
+                    overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+                >
+                    <h2 className="text-xl font-bold mb-4">Checkout</h2>
+                    <p className="mb-2">Name: {user?.displayName}</p>
+                    <p className="mb-2">Email: {user?.email}</p>
+
+                    <div className="flex items-center mb-4">
+                        <button
+                            onClick={() => setBuyQuantity(prev => Math.max(prev - 1, 1))}
+                            className="px-3 py-1 bg-gray-200 rounded-l"
+                        >-</button>
+                        <span className="px-4 py-1 border-t border-b">{buyQuantity}</span>
+                        <button
+                            onClick={() => setBuyQuantity(prev => prev + 1)}
+                            className="px-3 py-1 bg-gray-200 rounded-r"
+                        >+</button>
+                    </div>
+
                     <button
                         onClick={handleBuy}
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        className="bg-[#6F0E18] hover:bg-[#590b14] text-white px-4 py-2 rounded"
                     >
                         Confirm Purchase
                     </button>
-                </div>
-            </Modal>
-
+                </Modal>
+            </div>
         </div>
     );
 };

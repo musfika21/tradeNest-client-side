@@ -26,7 +26,7 @@ const ProductCard = ({ product }) => {
             {/* Button */}
             <Link to={`/product-Details/${_id}`}>
                 <div className="mt-4 flex justify-end text-white">
-                    <Button className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-xl font-medium flex items-center gap-3 text-center cursor-pointer"><CgNotes />View Details</Button>
+                    <Button className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer"><CgNotes />View Details</Button>
                 </div>
             </Link>
         </div>

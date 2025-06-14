@@ -11,6 +11,10 @@
     -webkit-text-fill-color: transparent;
 }
 
+.bg-dot-grid {
+  background-image: radial-gradient(#ffffff1a 1px, transparent 1px);
+  background-size: 20px 20px;
+}
 
 .bg-image{
     background-image: url('assets/bg.png');

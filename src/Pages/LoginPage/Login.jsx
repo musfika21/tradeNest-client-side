@@ -15,7 +15,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    console.log(location)
+    // console.log(location)
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -23,6 +23,7 @@ const Login = () => {
         const formData = new FormData(form);
 
         const { email, password, ...userProfile } = Object.fromEntries(formData);
+        // console.log(userProfile);
         loginUser(email, password)
             .then((result) => {
                 Swal.fire({
@@ -77,6 +78,7 @@ const Login = () => {
                     <div className="relative">
                         <input
                             type={showPassword ? "text" : "password"}
+                            name='password'
                             placeholder="Enter your password"
                             className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none"
                         />
