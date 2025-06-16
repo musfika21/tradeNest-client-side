@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 import axios from 'axios';
 import useAuth from '../../CustomHooks/UseAuth';
 import { toast } from 'react-toastify';
+import { LuMessageSquareWarning } from "react-icons/lu";
+import { Button } from '@material-tailwind/react';
 
 Modal.setAppElement('#root');
 
@@ -14,25 +16,27 @@ const Details = () => {
     const { user } = useAuth();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [buyQuantity, setBuyQuantity] = useState(product.minimum_selling_quantity);
+    const [buyQuantity, setBuyQuantity] = useState(minimum_selling_quantity);
 
     const handleBuy = async () => {
-        if (buyQuantity < product.minimum_selling_quantity) {
-            toast.error(`Minimum selling quantity is ${product.minimum_selling_quantity}`);
+        if (buyQuantity < minimum_selling_quantity) {
+            toast.error(`Cannot buy less than ${minimum_selling_quantity} units!`);
             return;
         }
-
         try {
-            const res = await axios.patch(`/products/${product._id}`, {
-                $inc: { main_quantity: -buyQuantity }
+            const response = await axios.patch(`${import.meta.env.VITE_SERVER_API}/products/buy/${_id}`, {
+                quantity: buyQuantity,
+                userEmail: user?.email
             });
 
-            toast.success('Purchase successful!');
-            setModalIsOpen(false);
-            navigate('/');
-        } catch (err) {
-            console.error(err);
-            toast.error('Something went wrong.');
+            if (response.data.success) {
+                toast.success('Purchase successful!');
+                setModalIsOpen(false);
+                navigate('/'); // Optional: Redirect after successful purchase
+            }
+        } catch (error) {
+            toast.error('Failed to process purchase. Please try again.');
+            console.error('Purchase error:', error);
         }
     };
 
@@ -41,34 +45,35 @@ const Details = () => {
             <div className="lg:w-5xl xl:w-6xl mx-auto py-10 px-4 border-2 border-gray-100">
                 <div className="flex flex-col md:flex-row gap-4 items-center p-5 bg-white rounded-md shadow-lg overflow-hidden">
                     <div className='flex-1'>
-                        <img src={product.photo} alt={product.name} className="xl:w-full xl:h-full object-cover" />
+                        <img src={photo} alt={name} className="xl:w-full xl:h-full object-cover" />
                     </div>
                     <div className="lg:p-6 flex-1">
-                        <h2 className="md:text-xl lg:text-2xl xl:text-3xl font-bold mb-7">{product.name}</h2>
+                        <h2 className="md:text-xl lg:text-2xl xl:text-3xl font-bold mb-7">{name}</h2>
                         <div className='flex justify-between'>
                             <div>
                                 <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Brand:</p>
                                 <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Category:</p>
                                 <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Rating:</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Price:</p>
                                 <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Available Quantity:</p>
-                                <p className="text-xs md:text-sm lg:text-base mb-4 font-medium">Minimum Selling Quantity:</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-medium">Minimum Selling Quantity:</p>
                             </div>
                             <div className='lg:mr-5'>
-                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{product.brand}</p>
-                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{product.category}</p>
-                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{product.rating}</p>
-                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{product.main_quantity}</p>
-                                <p className="text-xs md:text-sm lg:text-base mb-4 font-bold">{product.minimum_selling_quantity}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{brand}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{category}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{rating}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{price}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-2 font-bold">{main_quantity}</p>
+                                <p className="text-xs md:text-sm lg:text-base mb-4 font-bold">{minimum_selling_quantity}</p>
                             </div>
                         </div>
                         <div className='border border-gray-200'></div>
-                        <p className="text-xs md:text-sm lg:text-base mt-4">{product.description}</p>
-                        <button
-                            onClick={() => setModalIsOpen(true)}
-                            className="mt-6 bg-[#6F0E18] hover:bg-[#8a0a19] text-white text-xs sm:text-sm py-1 px-4 rounded-sm font-medium text-center cursor-pointer"
-                        >
-                            Buy
-                        </button>
+                        <p className="text-xs md:text-sm lg:text-base mt-4">{description}</p>
+                        <div className="mt-4 flex justify-end text-white">
+                            <Button
+                                onClick={() => setModalIsOpen(true)}
+                                className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer">Buy</Button>
+                        </div>
                     </div>
                 </div>
 
@@ -76,35 +81,112 @@ const Details = () => {
                     isOpen={modalIsOpen}
                     onRequestClose={() => setModalIsOpen(false)}
                     contentLabel="Buy Product"
-                    className="bg-white p-6 max-w-md mx-auto mt-20 rounded-lg shadow-xl outline-none"
-                    overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+                    className="bg-white w-[90%] max-w-2xl mx-auto rounded-xl p-8 shadow-2xl outline-none relative"
+                    overlayClassName="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
                 >
-                    <h2 className="text-xl font-bold mb-4">Checkout</h2>
-                    <p className="mb-2">Name: {user?.displayName}</p>
-                    <p className="mb-2">Email: {user?.email}</p>
-
-                    <div className="flex items-center mb-4">
-                        <button
-                            onClick={() => setBuyQuantity(prev => Math.max(prev - 1, 1))}
-                            className="px-3 py-1 bg-gray-200 rounded-l"
-                        >-</button>
-                        <span className="px-4 py-1 border-t border-b">{buyQuantity}</span>
-                        <button
-                            onClick={() => setBuyQuantity(prev => prev + 1)}
-                            className="px-3 py-1 bg-gray-200 rounded-r"
-                        >+</button>
+                    {/* Modal Header */}
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-800">{name}</h2>
+                        <p className="text-sm text-gray-600 mt-1">Confirm your purchase below</p>
                     </div>
 
-                    <button
-                        onClick={handleBuy}
-                        className="bg-[#6F0E18] hover:bg-[#590b14] text-white px-4 py-2 rounded"
-                    >
-                        Confirm Purchase
-                    </button>
+                    {/* User Info */}
+                    <div className="space-y-2 mb-6 ">
+                        <p className="font-medium">Name: <span className="text-gray-800">{user?.displayName || "N/A"}</span></p>
+                        <p className="font-medium">Email: <span className="text-gray-800">{user?.email || "N/A"}</span></p>
+                    </div>
+
+                    {/* Quantity Controls */}
+                    <div className="flex items-center justify-between w-4/5 mx-auto mb-6 border-t border-b py-1 border-gray-400">
+                        <button
+                            onClick={() => {
+                                if (buyQuantity <= minimum_selling_quantity) {
+                                    toast.error(`Cannot buy less than ${minimum_selling_quantity} units!`);
+                                } else {
+                                    setBuyQuantity((prev) => prev - 1);
+                                }
+                            }}
+                            className="text-lg font-bold px-4 py-2 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-l"
+                        >
+                            -
+                        </button>
+                        <span className="text-lg font-semibold px-6">{buyQuantity}</span>
+                        <button
+                            onClick={() => setBuyQuantity((prev) => Math.min(prev + 1, main_quantity))}
+                            className="text-lg font-bold px-4 py-2 bg-gray-200 hover:bg-gray-300 cursor-pointer rounded-r"
+                        >
+                            +
+                        </button>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex justify-between space-x-4">
+                        <button
+                            onClick={handleBuy}
+                            className="bg-[#6F0E18] hover:bg-[#590b14] text-white px-5 py-2 rounded-md transition cursor-pointer"
+                        >
+                            Confirm Purchase
+                        </button>
+                        <button
+                            onClick={() => setModalIsOpen(false)}
+                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded-md transition cursor-pointer"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                    <p className='flex gap-2 items-center text-xs mt-5 text-orange-300'><LuMessageSquareWarning />You can not buy less then minimum buying quantity of a product</p>
                 </Modal>
+
             </div>
         </div>
     );
 };
 
 export default Details;
+
+
+    // const handleBuy = async () => {
+    //     if (buyQuantity < product.minimum_selling_quantity) {
+    //         toast.error(`Minimum selling quantity is ${product.minimum_selling_quantity}`);
+    //         return;
+    //     }
+
+    //     try {
+    //         const res = await axios.patch(`${import.meta.env.VITE_SERVER_API}/products/${product._id}`);
+    //         toast.success('Purchase successful!');
+    //         setModalIsOpen(false);
+    //         // navigate('/');
+    //     } catch (err) {
+    //         console.error(err);
+    //         toast.error('Something went wrong.');
+    //     }
+    // };
+
+//      const handleDecrease = () => {
+//     if (quantity > 1) setQuantity(quantity - 1);
+//   };
+
+//   const handleIncrease = () => {
+//     setQuantity(quantity + 1);
+//   };
+
+//   const handleBuy = () => {
+//     if (quantity < product.minimum_selling_quantity) {
+//       return Swal.fire("Quantity too low!", `Minimum: ${product.minimum_selling_quantity}`, "error");
+//     }
+
+//     axios.patch(`${import.meta.env.VITE_SERVER_API}/products/buy/${product._id}`, {
+//       buyQuantity: quantity
+//     }, {
+//       headers: {
+//         Authorization: `Bearer ${localStorage.getItem('token')}`
+//       }
+//     })
+//     .then(() => {
+//       Swal.fire("Success!", "Product purchased", "success");
+//       onClose();
+//     })
+//     .catch(err => {
+//       Swal.fire("Error", "Could not complete purchase", "error");
+//     });
+//   };

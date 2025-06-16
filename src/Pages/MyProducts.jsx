@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../CustomHooks/UseAuth';
+import { Link } from 'react-router';
 
 const MyProducts = () => {
 
-     const { theme, user, loading } = useAuth();
+    const { theme, user, loading } = useAuth();
     const userEmail = user?.email;
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
@@ -18,7 +19,7 @@ const MyProducts = () => {
     }, [setProducts, userEmail]);
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto px-4 pt-15 bg-[#fef1f1] min-h-[calc(100vh-325px)]">
             <h2 className="text-3xl font-bold text-center mb-8">
                 My Products
             </h2>
@@ -38,6 +39,13 @@ const MyProducts = () => {
             {!loading && !error && products.length === 0 && (
                 <div className="text-center">
                     <p className="text-lg">No products found.</p>
+                    <Link to='add-Product'>
+                        <button
+                            className="mt-6 bg-[#6F0E18] hover:bg-[#8a0a19] text-white text-xs sm:text-sm py-2 px-4 rounded-sm font-medium text-center cursor-pointer"
+                        >
+                            Add Product
+                        </button>
+                    </Link>
                 </div>
             )}
 
@@ -69,9 +77,11 @@ const MyProducts = () => {
                                     ${product.price}
                                 </p>
                                 <div className="mt-4 flex justify-between">
-                                    <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                        Edit
-                                    </button>
+                                    <Link to={`/update-Product/${product._id}`}>
+                                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
+                                            Update
+                                        </button>
+                                    </Link>
                                     <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                                         Delete
                                     </button>

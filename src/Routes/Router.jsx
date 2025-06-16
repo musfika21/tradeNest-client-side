@@ -14,6 +14,8 @@ import Categories from '../Pages/Category/Categories';
 import AllProducts from '../Pages/allProduct/AllProducts';
 import Details from '../Pages/allProduct/Details';
 import Loader from '../components/Loader';
+import UpdateProduct from '../Pages/UpdateProduct';
+import FilteredCategory from '../Pages/categoryPages/FilteredCategory';
 
 const Router = createBrowserRouter([
     {
@@ -37,30 +39,43 @@ const Router = createBrowserRouter([
                 Component: ResetPassword
             },
             {
-                path: '/category',
+                path: '/categories',
                 Component: Categories
             },
             {
                 path: '/all-Products',
-                element: <PrivateRoutes><AllProducts/></PrivateRoutes>
+                element: <PrivateRoutes><AllProducts /></PrivateRoutes>
             },
             {
                 path: '/product-Details/:id',
                 loader: ({ params }) => fetch(`${import.meta.env.VITE_SERVER_API}/products/${params.id}`),
                 hydrateFallbackElement: <Loader />,
-                element: <PrivateRoutes><Details/></PrivateRoutes>
+                element: <PrivateRoutes><Details /></PrivateRoutes>
             },
             {
+                path: '/categories/:category',
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_SERVER_API}/products/category/${params.category}`),
+                hydrateFallbackElement: <Loader />,
+                Component: FilteredCategory
+            },
+
+            {
                 path: '/add-Product',
-                element: <PrivateRoutes><AddProduct/></PrivateRoutes>
+                element: <PrivateRoutes><AddProduct /></PrivateRoutes>
             },
             {
                 path: '/my-Products',
-                element: <PrivateRoutes><MyProducts/></PrivateRoutes>
+                element: <PrivateRoutes><MyProducts /></PrivateRoutes>
             },
             {
                 path: '/cart',
-                element: <PrivateRoutes><Cart/></PrivateRoutes>
+                element: <PrivateRoutes><Cart /></PrivateRoutes>
+            },
+            {
+                path: "/update-Product/:id",
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_SERVER_API}/products/${params.id}`),
+                hydrateFallbackElement: <Loader />,
+                element: <PrivateRoutes><UpdateProduct /></PrivateRoutes>
             },
             {
                 path: '/*',

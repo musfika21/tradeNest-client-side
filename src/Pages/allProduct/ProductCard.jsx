@@ -4,7 +4,7 @@ import { CgNotes } from "react-icons/cg";
 import { Link } from 'react-router';
 
 const ProductCard = ({ product }) => {
-    const {_id, photo, name, category, rating, brand } = product;
+    const { _id, photo, name, category, rating, brand } = product;
 
     return (
         <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-4">
@@ -24,11 +24,20 @@ const ProductCard = ({ product }) => {
             </div>
 
             {/* Button */}
-            <Link to={`/product-Details/${_id}`}>
-                <div className="mt-4 flex justify-end text-white">
-                    <Button className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer"><CgNotes />View Details</Button>
-                </div>
-            </Link>
+            <div className='flex justify-between'>
+                <Link to={`/product-Details/${_id}`}>
+                    <div className="mt-4 flex justify-end text-white">
+                        <Button className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer"><CgNotes />View Details</Button>
+                    </div>
+                </Link>
+                <Link to={`/update-Product/${product._id}`}>
+                    <div className='mt-4 flex justify-end text-white'>
+                        <Button className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer">
+                            Update
+                        </Button>
+                    </div>
+                </Link>
+            </div>
         </div>
     );
 };

@@ -11,11 +11,11 @@ import useAuth from '../../CustomHooks/UseAuth';
 
 const Login = () => {
 
-    const { loginUser } = useAuth();
+    const { loginUser, setLoading } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    // console.log(location)
+
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -31,6 +31,7 @@ const Login = () => {
                     icon: "success",
                     draggable: true
                 });
+                setLoading(false)
                 navigate(location.state || "/");
             })
             .catch((error) => {

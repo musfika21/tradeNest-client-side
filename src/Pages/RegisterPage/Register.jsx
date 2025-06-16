@@ -13,7 +13,7 @@ import useAuth from '../../CustomHooks/UseAuth';
 
 const Register = () => {
 
-    const { createUser } = useAuth();
+    const { createUser, updateUserInfo, setUser } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
@@ -38,7 +38,6 @@ const Register = () => {
         const formData = new FormData(form);
         const { email, password, name, photo, ...userProfile } = Object.fromEntries(formData)
 
-        // console.log(email, password, userProfile, name, photo)
         const validatePassword = validationOfPassword(password);
         if (validatePassword) {
             setErrorMessage(validatePassword);
@@ -47,12 +46,22 @@ const Register = () => {
         // create user
         createUser(email, password)
             .then((result) => {
-                Swal.fire({
-                    title: "Successfully Registered",
-                    icon: "success",
-                    draggable: true
-                });
-                navigate(location.state || "/");
+
+                // Update user profile
+                updateUserInfo({ displayName: name, photoURL: photo })
+                    .then(() => {
+                        setUser((currentUser) => {
+                            console.log(currentUser, name, photo);
+                            currentUser.displayName = name;
+                            currentUser.photoURL = photo;
+                            Swal.fire({
+                                title: "Successfully Registered",
+                                icon: "success",
+                                draggable: true
+                            });
+                            navigate(location.state || '/');
+                        })
+                    })
             })
             .catch((error) => {
                 setErrorMessage(error.message);
@@ -78,7 +87,6 @@ const Register = () => {
         <div className='bg-image py-20 text-white'>
             <div className='bg-image flex flex-col lg:flex-row justify-between p-6 items-center w-full md:w-10/12 lg:w-11/12 mx-auto shadow-2xl/90 inset-shadow-xl/10'>
                 <div className='flex-1 px-3'>
-                    {/* <h1>Welcome!😍</h1> */}
                     <Lottie options={defaultOptions} className='h-10 sm:h-12 md:h-15' />
                     <p className='text-sm md:text-base rounded-md bg-black/20 p-4 w-11/12 sm:w-4/5 text-center mx-auto text-shadow-lg/30 lg:mt-20'>to our Trade Nest — connecting bulk suppliers with retailers and buyers across multiple product categories. Enjoy secure transactions, easy product management, and a seamless buying experience, all in one responsive platform</p>
                 </div>
@@ -128,8 +136,8 @@ const Register = () => {
                                     <button onClick={() => setShowPassword(!showPassword)}>
                                         {
                                             showPassword ?
-                                                <IoEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" /> : 
-                                                <IoEyeOff className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />       
+                                                <IoEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" /> :
+                                                <IoEyeOff className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />
                                         }
                                     </button>
                                 </div>

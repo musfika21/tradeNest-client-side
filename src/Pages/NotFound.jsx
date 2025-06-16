@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
       {/* Grid Background */}
       <div className="absolute inset-0 bg-dot-grid opacity-10 pointer-events-none z-0"></div>
 
@@ -11,7 +11,7 @@ const NotFound = () => {
       <div className="z-10 text-center">
         {/* 404 */}
         <h1 className="text-[80px] sm:text-[120px] md:text-[180px] lg:text-[220px] xl:text-[260px] font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-[#6F0E18] to-[#9b1c2e] drop-shadow-[0_0_25px_#6F0E18]">
-          404
+          4 0 4
         </h1>
 
         {/* PAGE NOT FOUND */}

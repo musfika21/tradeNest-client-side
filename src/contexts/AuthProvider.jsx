@@ -13,7 +13,6 @@ import { AuthContext } from './AuthContext';
 import { auth } from '../Firebase/firebase.init';
 
 const AuthProvider = ({ children }) => {
-
     // PROVIDER
     const googleProvider = new GoogleAuthProvider();
 

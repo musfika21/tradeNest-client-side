@@ -1,8 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const Card = ({ cat }) => {
+    // console.log(cat)
+    const categoryName = cat.name.slice(0,3)
+    // console.log(categoryName)
     return (
-        <div
+        <>
+            <Link to={`${cat.name}`}>
+                <div
             className="bg-white rounded-xl overflow-hidden border border-[#6F0E18] shadow-md hover:shadow-lg transition duration-300 transform hover:scale-[1.02] cursor-pointer"
         >
             <div className="aspect-[4/3] w-full overflow-hidden">
@@ -13,9 +19,11 @@ const Card = ({ cat }) => {
                 />
             </div>
             <div className="p-4 bg-white">
-                <h3 className="text-lg font-semibold text-center text-gray-800">{cat.name}</h3>
+                <h3 className=" font-semibold text-center text-gray-800">{cat.name}</h3>
             </div>
         </div>
+            </Link>
+        </>
     );
 };
 

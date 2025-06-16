@@ -14,10 +14,13 @@ const AddProduct = () => {
         const form = e.target;
         const formData = new FormData(form);
         const newProduct = Object.fromEntries(formData);
+        const main_quantity = parseInt(e.target.main_quantity.value);
+        const minimum_selling_quantity = parseInt(e.target.minimum_selling_quantity.value);
+        const price = parseInt(e.target.price.value);
 
         // Sending email in the database
         const productWithEmail = {
-            ...newProduct,
+            ...newProduct, main_quantity, minimum_selling_quantity, price,
             email: user?.email || "unknown@domain.com",
         };
 
@@ -128,21 +131,21 @@ const AddProduct = () => {
                             className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none"
                         >
                             <option value="">Select Category</option>
-                            <option value="Electronics & Gadgets">
+                            <option value="Electronics_and_Gadgets">
                                 Electronics & Gadgets
                             </option>
-                            <option value="Home & Kitchen Appliances">
+                            <option value="Home_and_Kitchen_Appliances">
                                 Home & Kitchen Appliances
                             </option>
-                            <option value="Fashion & Apparel">Fashion & Apparel</option>
-                            <option value="Industrial Machinery & Tools">
+                            <option value="Fashion_Apparel">Fashion & Apparel</option>
+                            <option value="Industrial_Machinery_and_Tools">
                                 Industrial Machinery & Tools
                             </option>
                             <option value="Health & Beauty">Health & Beauty</option>
-                            <option value="Automotive Parts & Accessories">
+                            <option value="Automotive_Parts_and_Accessories">
                                 Automotive Parts & Accessories
                             </option>
-                            <option value="Office Supplies & Stationery">
+                            <option value="Office_Supplies_and_Stationery">
                                 Office Supplies & Stationery
                             </option>
                         </select>

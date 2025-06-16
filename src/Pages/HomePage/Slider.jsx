@@ -7,12 +7,12 @@ import slide3 from '../../assets/bannerImages/slide3.jpg';
 
 const slides = [
     {
-        image: slide1,
+        image: slide2,
         title: "Connect with Trusted Suppliers",
         subtitle: "Discover reliable wholesale vendors from around the country."
     },
     {
-        image: slide2,
+        image: slide1,
         title: "Expand Your Business Reach",
         subtitle: "Buy and sell products in bulk with ease and security."
     },
