@@ -48,13 +48,13 @@ const Router = createBrowserRouter([
             },
             {
                 path: '/product-Details/:id',
-                loader: ({ params }) => fetch(`${import.meta.env.VITE_SERVER_API}/products/${params.id}`),
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_SERVER_API}/product/${params.id}`),
                 hydrateFallbackElement: <Loader />,
                 element: <PrivateRoutes><Details /></PrivateRoutes>
             },
             {
-                path: '/categories/:category',
-                loader: ({ params }) => fetch(`${import.meta.env.VITE_SERVER_API}/products/category/${params.category}`),
+                path: '/category/:category',
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_SERVER_API}/category/${params.category}`),
                 hydrateFallbackElement: <Loader />,
                 Component: FilteredCategory
             },

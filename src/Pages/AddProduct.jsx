@@ -5,6 +5,39 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../CustomHooks/UseAuth";
 
+const categories = [
+    {
+        name: "Electronics & Gadgets",
+        slug: 'electronics_&_gadgets',
+    },
+    {
+        name: "Home & Kitchen Appliances",
+        slug: 'home_&_kitchen_appliances',
+    },
+    {
+        name: "Fashion & Apparel",
+        slug: 'fashion_&_apparel',
+
+    },
+    {
+        name: "Industrial Machinery & Tools",
+        slug: 'industrial_machinery_&_tools',
+
+    },
+    {
+        name: "Health & Beauty",
+        slug: 'health_&_beauty',
+    },
+    {
+        name: "Automotive Parts & Accessories",
+        slug: 'automotive_parts_&_accessories',
+    },
+    {
+        name: "Office Supplies & Stationery",
+        slug: 'office_supplies_&_stationery',
+    }
+];
+
 const AddProduct = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -17,11 +50,13 @@ const AddProduct = () => {
         const main_quantity = parseInt(e.target.main_quantity.value);
         const minimum_selling_quantity = parseInt(e.target.minimum_selling_quantity.value);
         const price = parseInt(e.target.price.value);
+        const rating = parseFloat(e.target.rating.value);
+        const category = categories.find(category => category.slug === e.target.category_slug.value).name;
 
         // Sending email in the database
         const productWithEmail = {
-            ...newProduct, main_quantity, minimum_selling_quantity, price,
-            email: user?.email || "unknown@domain.com",
+            ...newProduct, main_quantity, minimum_selling_quantity, price, rating,
+            email: user?.email || "unknown@domain.com", category: category
         };
 
         axios
@@ -126,28 +161,19 @@ const AddProduct = () => {
                     <div>
                         <label className="block mb-1 font-medium">Category</label>
                         <select
-                            name="category"
+                            name="category_slug"
                             required
                             className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none"
                         >
                             <option value="">Select Category</option>
-                            <option value="Electronics_and_Gadgets">
-                                Electronics & Gadgets
-                            </option>
-                            <option value="Home_and_Kitchen_Appliances">
-                                Home & Kitchen Appliances
-                            </option>
-                            <option value="Fashion_Apparel">Fashion & Apparel</option>
-                            <option value="Industrial_Machinery_and_Tools">
-                                Industrial Machinery & Tools
-                            </option>
-                            <option value="Health & Beauty">Health & Beauty</option>
-                            <option value="Automotive_Parts_and_Accessories">
-                                Automotive Parts & Accessories
-                            </option>
-                            <option value="Office_Supplies_and_Stationery">
-                                Office Supplies & Stationery
-                            </option>
+                            {
+                                categories.map((category) => (
+                                    <option key={category.slug} value={category.slug}>
+                                        {category.name}
+                                    </option>
+                                ))
+                            }
+
                         </select>
                     </div>
 

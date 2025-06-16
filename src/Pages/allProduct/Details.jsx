@@ -6,6 +6,7 @@ import useAuth from '../../CustomHooks/UseAuth';
 import { toast } from 'react-toastify';
 import { LuMessageSquareWarning } from "react-icons/lu";
 import { Button } from '@material-tailwind/react';
+import Swal from 'sweetalert2';
 
 Modal.setAppElement('#root');
 
@@ -18,28 +19,61 @@ const Details = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [buyQuantity, setBuyQuantity] = useState(minimum_selling_quantity);
 
-    const handleBuy = async () => {
+    const handleAddCart = async () => {
         if (buyQuantity < minimum_selling_quantity) {
             toast.error(`Cannot buy less than ${minimum_selling_quantity} units!`);
             return;
         }
-        try {
-            const response = await axios.patch(`${import.meta.env.VITE_SERVER_API}/products/buy/${_id}`, {
-                quantity: buyQuantity,
-                userEmail: user?.email
+
+        const purchaseProduct = {
+            email: user.email,
+            purchasedProduct: _id,
+            purchaseAmount: buyQuantity,
+            name, photo, brand, price, category, description, rating
+        };
+
+        // posting the purchase product in the database
+        axios.post(`${import.meta.env.VITE_SERVER_API}/purchase`, purchaseProduct)
+            .then(data =>{
+                if (data.data.insertedId) {
+                    console.log(buyQuantity)
+                     axios.patch(`${import.meta.env.VITE_SERVER_API}/products/${_id}`, {buyQuantity : -buyQuantity})
+                        .then((data) =>{
+                        console.log(data.data)
+            })
+                    Swal.fire({
+                        position: "top-end",
+                            icon: "success",
+                            title: "Product Added Successfully",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        navigate("/cart");
+                } else {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "error",
+                        title: "Failed to add Product in cart",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
+                }
+                
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "Failed to add Product",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
             });
 
-            if (response.data.success) {
-                toast.success('Purchase successful!');
-                setModalIsOpen(false);
-                navigate('/'); // Optional: Redirect after successful purchase
-            }
-        } catch (error) {
-            toast.error('Failed to process purchase. Please try again.');
-            console.error('Purchase error:', error);
-        }
-    };
-
+           
+            
+    }
     return (
         <div className='bg-[#fef1f1]'>
             <div className="lg:w-5xl xl:w-6xl mx-auto py-10 px-4 border-2 border-gray-100">
@@ -72,7 +106,7 @@ const Details = () => {
                         <div className="mt-4 flex justify-end text-white">
                             <Button
                                 onClick={() => setModalIsOpen(true)}
-                                className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer">Buy</Button>
+                                className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer">Add to Cart</Button>
                         </div>
                     </div>
                 </div>
@@ -122,7 +156,7 @@ const Details = () => {
                     {/* Action Buttons */}
                     <div className="flex justify-between space-x-4">
                         <button
-                            onClick={handleBuy}
+                            onClick={handleAddCart}
                             className="bg-[#6F0E18] hover:bg-[#590b14] text-white px-5 py-2 rounded-md transition cursor-pointer"
                         >
                             Confirm Purchase
@@ -140,53 +174,5 @@ const Details = () => {
             </div>
         </div>
     );
-};
-
+}
 export default Details;
-
-
-    // const handleBuy = async () => {
-    //     if (buyQuantity < product.minimum_selling_quantity) {
-    //         toast.error(`Minimum selling quantity is ${product.minimum_selling_quantity}`);
-    //         return;
-    //     }
-
-    //     try {
-    //         const res = await axios.patch(`${import.meta.env.VITE_SERVER_API}/products/${product._id}`);
-    //         toast.success('Purchase successful!');
-    //         setModalIsOpen(false);
-    //         // navigate('/');
-    //     } catch (err) {
-    //         console.error(err);
-    //         toast.error('Something went wrong.');
-    //     }
-    // };
-
-//      const handleDecrease = () => {
-//     if (quantity > 1) setQuantity(quantity - 1);
-//   };
-
-//   const handleIncrease = () => {
-//     setQuantity(quantity + 1);
-//   };
-
-//   const handleBuy = () => {
-//     if (quantity < product.minimum_selling_quantity) {
-//       return Swal.fire("Quantity too low!", `Minimum: ${product.minimum_selling_quantity}`, "error");
-//     }
-
-//     axios.patch(`${import.meta.env.VITE_SERVER_API}/products/buy/${product._id}`, {
-//       buyQuantity: quantity
-//     }, {
-//       headers: {
-//         Authorization: `Bearer ${localStorage.getItem('token')}`
-//       }
-//     })
-//     .then(() => {
-//       Swal.fire("Success!", "Product purchased", "success");
-//       onClose();
-//     })
-//     .catch(err => {
-//       Swal.fire("Error", "Could not complete purchase", "error");
-//     });
-//   };

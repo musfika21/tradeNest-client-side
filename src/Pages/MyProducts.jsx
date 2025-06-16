@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../CustomHooks/UseAuth';
 import { Link } from 'react-router';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const MyProducts = () => {
 
@@ -9,14 +11,44 @@ const MyProducts = () => {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
 
-    // load specific category according careLevel
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_SERVER_API}/my-Products?email=${userEmail}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setProducts(data);
-            });
-    }, [setProducts, userEmail]);
+    axios.get(`${import.meta.env.VITE_SERVER_API}/my-Products?email=${userEmail}`)
+        .then((data) => {
+            setProducts(data.data);
+        });
+
+    // delete product from database
+    const handleDelete = (id) => {
+        // console.log(id)
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`${import.meta.env.VITE_SERVER_API}/products/${id}`, {
+                    method: 'DELETE'
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        console.log('after delete', data);
+                        if (data.deletedCount) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your Product has been deleted.",
+                                icon: "success",
+                            });
+                            // removing the coffee from the UI
+                            const remainingProduct = products.filter((prod) => prod._id !== id);
+                            setProducts(remainingProduct);
+                        }
+                    })
+            }
+        });
+    }
 
     return (
         <div className="container mx-auto px-4 pt-15 bg-[#fef1f1] min-h-[calc(100vh-325px)]">
@@ -82,7 +114,9 @@ const MyProducts = () => {
                                             Update
                                         </button>
                                     </Link>
-                                    <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                    <button
+                                        onClick={() => handleDelete(product._id)}
+                                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                                         Delete
                                     </button>
                                 </div>

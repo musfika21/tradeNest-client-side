@@ -16,9 +16,11 @@ const UpdateProduct = () => {
         const main_quantity = parseInt(e.target.main_quantity.value);
         const minimum_selling_quantity = parseInt(e.target.minimum_selling_quantity.value);
         const price = parseInt(e.target.price.value);
+        const rating = parseFloat(e.target.rating.value);
+
 
         // update product object
-        const updateProduct = { ...newProduct, main_quantity, minimum_selling_quantity, price };
+        const updateProduct = { ...newProduct, main_quantity, minimum_selling_quantity, price, rating };
 
         axios.
             put(`${import.meta.env.VITE_SERVER_API}/products/${_id}`, updateProduct)

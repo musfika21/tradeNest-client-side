@@ -2,12 +2,11 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const Card = ({ cat }) => {
-    // console.log(cat)
-    const categoryName = cat.name.slice(0,3)
-    // console.log(categoryName)
+
+    console.log(cat.slug)
     return (
         <>
-            <Link to={`${cat.name}`}>
+            <Link to={`/category/${cat.slug}`}>
                 <div
             className="bg-white rounded-xl overflow-hidden border border-[#6F0E18] shadow-md hover:shadow-lg transition duration-300 transform hover:scale-[1.02] cursor-pointer"
         >

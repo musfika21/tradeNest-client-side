@@ -1,26 +1,22 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useLoaderData} from 'react-router';
 
 const FilteredCategory = () => {
-  const { categoryName } = useParams();
-  console.log(categoryName)
-  const [products, setProducts] = useState([]);
+  const  products = useLoaderData();
+  console.log(products)
 
-  useEffect(() => {
-    axios.get(`${import.meta.env.VITE_SERVER_API}/products/category`)
-      .then((res) => {
-        const filtered = res.data.filter(
-          (product) => product.category === (categoryName)
-        );
-        setProducts(filtered);
-      });
-  }, [categoryName]);
+
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4">
-      <h2 className="text-2xl font-bold mb-6">
-        Products in "{(categoryName)}"
+      {
+        products?.length === 0 ? 
+      <div>
+        <h2>there is not product on this category</h2>
+      </div>
+      : 
+      <>
+       <h2 className="text-2xl font-bold mb-6">
+        Products in "{products[0].category}"
       </h2>
       <div className="grid md:grid-cols-3 gap-6">
         {products.map(product => (
@@ -31,6 +27,8 @@ const FilteredCategory = () => {
           </div>
         ))}
       </div>
+      </>
+      }
     </div>
   );
 };
