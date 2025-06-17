@@ -11,20 +11,20 @@ const Cart = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-    if (!user || !user.email || !user.accessToken) return;
+        if (!user || !user.email || !user.accessToken) return;
 
-    axios.get(`${import.meta.env.VITE_SERVER_API}/my-Purchase?email=${user.email}`)
-    .then(res => {
-        setProducts(res.data);
-    })
-    .catch(err => {
-        console.error(err);
-        setError("Failed to fetch purchase data.");
-    });
+        axios.get(`${import.meta.env.VITE_SERVER_API}/my-Purchase?email=${user.email}`)
+            .then(res => {
+                setProducts(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                setError("Failed to fetch purchase data.");
+            });
 
-}, [user]);
+    }, [user]);
     return (
-        <div className="container mx-auto px-4 pt-15 bg-[#fef1f1] min-h-[calc(100vh-325px)]">
+        <div className="container mx-auto px-4 pt-15 bg-[#fef1f1] min-h-[calc(100vh-325px)] pb-5">
             <h2 className="text-3xl font-bold text-center mb-8">My Cart</h2>
 
             {loading && (

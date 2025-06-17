@@ -36,32 +36,44 @@ const Card = ({ product }) => {
 
 
     return (
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 max-w-sm mx-auto overflow-hidden">
-            <img
-                src={photo}
-                alt={name}
-                className="w-full h-56 object-cover"
-                onError={(e) => (e.target.src = 'https://via.placeholder.com/300')}
-            />
-            <div className="p-5">
-                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200 truncate">{name}</h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">{description || 'No description available.'}</p>
+        <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 max-w-sm mx-auto overflow-hidden border border-gray-200 ">
+            {/* Image */}
+            <div className="w-full h-56 flex items-center justify-center overflow-hidden">
+                <img
+                    src={photo}
+                    alt={name}
+                    className="h-full w-full object-contain transition-transform duration-300 hover:scale-105"
+                    onError={(e) => (e.target.src = 'https://via.placeholder.com/300')}
+                />
+            </div>
 
-                <div className="mt-3 text-sm text-gray-500 dark:text-gray-400 space-y-1">
-                    <p><span className="font-medium">Brand:</span> {brand || 'Unknown'}</p>
-                    <p><span className="font-medium">Category:</span> {category || 'N/A'}</p>
-                    <p><span className="font-medium">Purchased Qty:</span> {purchaseAmount || 0}</p>
+            {/* Content */}
+            <div className="p-5">
+                {/* Product Name */}
+                <h2 className="text-xl font-bold text-gray-800  truncate">{name}</h2>
+
+                {/* Description */}
+                <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                    {description || 'No description available.'}
+                </p>
+
+                {/* Details */}
+                <div className="mt-3 text-sm text-gray-600 space-y-1">
+                    <p><span className="font-medium text-gray-800 ">Brand:</span> {brand || 'Unknown'}</p>
+                    <p><span className="font-medium text-gray-800 ">Category:</span> {category || 'N/A'}</p>
+                    <p><span className="font-medium text-gray-800 ">Purchased Quantity:</span> {purchaseAmount || 0}</p>
                 </div>
 
+                {/* Price and Action */}
                 <div className="mt-4 flex items-center justify-between">
-
                     <span className="text-lg font-bold text-green-600">${price}</span>
                 </div>
 
+                {/* Delete Button */}
                 <div className="mt-5">
                     <button
                         onClick={handleCancel}
-                        className="w-full py-2 px-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition">
+                        className="w-full py-2 px-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition duration-200">
                         Delete
                     </button>
                 </div>

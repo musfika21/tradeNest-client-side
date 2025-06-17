@@ -148,8 +148,8 @@ const Details = () => {
                             disabled={buyQuantity < minimum_selling_quantity || buyQuantity > main_quantity}
                             onClick={handleAddCart}
                             className={`px-5 py-2 rounded-md transition ${buyQuantity < minimum_selling_quantity || buyQuantity > main_quantity
-                                    ? "bg-gray-400 cursor-not-allowed"
-                                    : "bg-[#6F0E18] hover:bg-[#590b14] text-white cursor-pointer"
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-[#6F0E18] hover:bg-[#590b14] text-white cursor-pointer"
                                 }`}
                         >
                             Confirm Purchase

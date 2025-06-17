@@ -106,18 +106,18 @@ const AllProducts = () => {
                                         <td className="p-3 align-middle">
                                             <div className="flex gap-1 items-center">
                                                 <Link to={`/product-Details/${product._id}`}>
-                                                <Button className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer">
-                                                    <CgNotes className="text-[9px] sm:text-[11px] md:text-xs lg:text-[14px] xl:text-sm" />
-                                                    View Details
-                                                </Button>
-                                            </Link>
-                                            <Link to={`/update-Product/${product._id}`}>
-                                                <div className='flex justify-end text-white'>
                                                     <Button className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer">
-                                                        Update
+                                                        <CgNotes className="text-[9px] sm:text-[11px] md:text-xs lg:text-[14px] xl:text-sm" />
+                                                        View Details
                                                     </Button>
-                                                </div>
-                                            </Link>
+                                                </Link>
+                                                <Link to={`/update-Product/${product._id}`}>
+                                                    <div className='flex justify-end text-white'>
+                                                        <Button className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer">
+                                                            Update
+                                                        </Button>
+                                                    </div>
+                                                </Link>
                                             </div>
                                         </td>
                                     </tr>

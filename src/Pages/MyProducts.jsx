@@ -14,18 +14,18 @@ const MyProducts = () => {
     console.log(accessToken)
 
     useEffect(() => {
-    if (!user || !user.email || !user.accessToken) return;
+        if (!user || !user.email || !user.accessToken) return;
 
-    axios.get(`${import.meta.env.VITE_SERVER_API}/my-Products?email=${user.email}`)
-    .then((data) => {
-        setProducts(data.data);
-    })
-    .catch((err) => {
-        console.error(err);
-        setError("Failed to fetch products.");
-    });
+        axios.get(`${import.meta.env.VITE_SERVER_API}/my-Products?email=${user.email}`)
+            .then((data) => {
+                setProducts(data.data);
+            })
+            .catch((err) => {
+                console.error(err);
+                setError("Failed to fetch products.");
+            });
 
-}, [user]);
+    }, [user]);
 
     // delete product from database
     const handleDelete = (id) => {
@@ -62,7 +62,7 @@ const MyProducts = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 pt-15 bg-[#fef1f1] min-h-[calc(100vh-325px)]">
+        <div className="container mx-auto px-4 pt-15 bg-[#fef1f1] min-h-[calc(100vh-325px)] pb-5">
             <h2 className="text-3xl font-bold text-center mb-8">
                 My Products
             </h2>
@@ -97,37 +97,52 @@ const MyProducts = () => {
                     {products.map((product) => (
                         <div
                             key={product._id}
-                            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden border border-gray-200"
                         >
-                            {product.image && (
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-full h-48 object-cover"
-                                    onError={(e) => {
-                                        e.target.src = 'https://via.placeholder.com/150';
-                                    }}
-                                />
+                            {/* Image */}
+                            {product.photo ? (
+                                <div className="w-full h-60 bg-white flex items-center justify-center overflow-hidden">
+                                    <img
+                                        src={product.photo}
+                                        alt={product.name}
+                                        className="h-full object-contain transition-transform duration-300 hover:scale-105"
+                                        onError={(e) => {
+                                            e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
+                                        }}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="w-full h-60 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+                                    No Image Available
+                                </div>
                             )}
-                            <div className="p-4">
-                                <h3 className="text-xl font-semibold mb-2">
+
+
+                            {/* Product Info */}
+                            <div className="p-5">
+                                <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1">
                                     {product.name || 'Unnamed Product'}
                                 </h3>
-                                <p className="text-gray-600 mb-4 line-clamp-3">
+                                <p className="text-sm text-gray-600 mb-3 line-clamp-3">
                                     {product.description || 'No description available.'}
                                 </p>
-                                <p className="text-lg font-bold text-green-600">
-                                    ${product.price}
-                                </p>
-                                <div className="mt-4 flex justify-between">
+
+                                <div className="text-md font-semibold text-green-600 mb-4">
+                                    ${product.price?.toFixed(2) || '0.00'}
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className="flex justify-between items-center gap-3">
                                     <Link to={`/update-Product/${product._id}`}>
-                                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer">
+                                        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition">
                                             Update
                                         </button>
                                     </Link>
+
                                     <button
                                         onClick={() => handleDelete(product._id)}
-                                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                        className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition"
+                                    >
                                         Delete
                                     </button>
                                 </div>

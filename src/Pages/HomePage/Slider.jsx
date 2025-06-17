@@ -1,6 +1,8 @@
 import React from 'react';
 import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
+import { motion } from 'framer-motion';
+
 import slide1 from '../../assets/bannerImages/slide1.jpg';
 import slide2 from '../../assets/bannerImages/slide2.jpg';
 import slide3 from '../../assets/bannerImages/slide3.jpg';
@@ -23,6 +25,11 @@ const slides = [
     }
 ];
 
+const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } }
+};
+
 const Slider = () => {
     return (
         <div className="h-[60vh] md:h-[70vh] lg:h-[80vh] w-full overflow-hidden shadow-xl relative">
@@ -40,8 +47,23 @@ const Slider = () => {
                             className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-start px-6 md:px-16 text-white">
-                            <h2 className="text-2xl md:text-4xl font-bold mb-2 drop-shadow-md">{slide.title}</h2>
-                            <p className="text-sm md:text-lg font-medium drop-shadow-md">{slide.subtitle}</p>
+                            <motion.h2
+                                variants={fadeUp}
+                                initial="hidden"
+                                animate="visible"
+                                className="text-2xl md:text-4xl font-bold mb-2 drop-shadow-md"
+                            >
+                                {slide.title}
+                            </motion.h2>
+                            <motion.p
+                                variants={fadeUp}
+                                initial="hidden"
+                                animate="visible"
+                                transition={{ delay: 0.4 }}
+                                className="text-sm md:text-lg font-medium drop-shadow-md"
+                            >
+                                {slide.subtitle}
+                            </motion.p>
                         </div>
                     </div>
                 ))}
