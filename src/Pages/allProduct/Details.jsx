@@ -19,7 +19,7 @@ const Details = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [buyQuantity, setBuyQuantity] = useState(minimum_selling_quantity);
 
-    const handleAddCart = async () => {
+    const handleAddCart = () => {
         if (buyQuantity < minimum_selling_quantity) {
             toast.error(`Cannot buy less than ${minimum_selling_quantity} units!`);
             return;
@@ -34,31 +34,23 @@ const Details = () => {
 
         // posting the purchase product in the database
         axios.post(`${import.meta.env.VITE_SERVER_API}/purchase`, purchaseProduct)
-            .then(data =>{
+            .then(data => {
                 if (data.data.insertedId) {
                     console.log(buyQuantity)
-                     axios.patch(`${import.meta.env.VITE_SERVER_API}/products/${_id}`, {buyQuantity : -buyQuantity})
-                        .then((data) =>{
-                        console.log(data.data)
-            })
+                    axios.patch(`${import.meta.env.VITE_SERVER_API}/products/${_id}`, { buyQuantity: -buyQuantity })
+                        .then((data) => {
+                            console.log(data.data)
+                        })
                     Swal.fire({
                         position: "top-end",
-                            icon: "success",
-                            title: "Product Added Successfully",
-                            showConfirmButton: false,
-                            timer: 1500,
-                        });
-                        navigate("/cart");
-                } else {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "error",
-                        title: "Failed to add Product in cart",
+                        icon: "success",
+                        title: "Product Added Successfully",
                         showConfirmButton: false,
                         timer: 1500,
                     });
+                    navigate("/cart");
                 }
-                
+
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -70,9 +62,6 @@ const Details = () => {
                     timer: 1500,
                 });
             });
-
-           
-            
     }
     return (
         <div className='bg-[#fef1f1]'>
@@ -156,8 +145,12 @@ const Details = () => {
                     {/* Action Buttons */}
                     <div className="flex justify-between space-x-4">
                         <button
+                            disabled={buyQuantity < minimum_selling_quantity || buyQuantity > main_quantity}
                             onClick={handleAddCart}
-                            className="bg-[#6F0E18] hover:bg-[#590b14] text-white px-5 py-2 rounded-md transition cursor-pointer"
+                            className={`px-5 py-2 rounded-md transition ${buyQuantity < minimum_selling_quantity || buyQuantity > main_quantity
+                                    ? "bg-gray-400 cursor-not-allowed"
+                                    : "bg-[#6F0E18] hover:bg-[#590b14] text-white cursor-pointer"
+                                }`}
                         >
                             Confirm Purchase
                         </button>

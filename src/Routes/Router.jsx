@@ -9,13 +9,13 @@ import ResetPassword from '../Pages/ResetPassword';
 import PrivateRoutes from './PrivateRoutes';
 import AddProduct from '../Pages/AddProduct';
 import MyProducts from '../Pages/MyProducts';
-import Cart from '../Pages/Cart';
 import Categories from '../Pages/Category/Categories';
 import AllProducts from '../Pages/allProduct/AllProducts';
 import Details from '../Pages/allProduct/Details';
 import Loader from '../components/Loader';
 import UpdateProduct from '../Pages/UpdateProduct';
 import FilteredCategory from '../Pages/categoryPages/FilteredCategory';
+import Cart from '../Pages/cart/Cart';
 
 const Router = createBrowserRouter([
     {

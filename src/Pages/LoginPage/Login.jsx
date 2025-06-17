@@ -26,6 +26,7 @@ const Login = () => {
         // console.log(userProfile);
         loginUser(email, password)
             .then((result) => {
+                console.log(result)
                 Swal.fire({
                     title: "Successfully Logged in",
                     icon: "success",
@@ -115,3 +116,6 @@ const Login = () => {
 };
 
 export default Login;
+
+
+ 

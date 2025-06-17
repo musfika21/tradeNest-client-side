@@ -11,11 +11,17 @@ const MyProducts = () => {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
 
-    axios.get(`${import.meta.env.VITE_SERVER_API}/my-Products?email=${userEmail}`)
+    useEffect(() =>{
+        axios.get(`${import.meta.env.VITE_SERVER_API}/my-Products?email=${userEmail}`, {
+        headers: {
+            authorization: ``
+        }
+    })
         .then((data) => {
             setProducts(data.data);
         });
 
+    }, [])
     // delete product from database
     const handleDelete = (id) => {
         // console.log(id)
