@@ -20,11 +20,30 @@ const FilteredCategory = () => {
       </h2>
       <div className="grid md:grid-cols-3 gap-6">
         {products.map(product => (
-          <div key={product._id} className="bg-white p-4 shadow rounded-md">
-            <img src={product.photo} alt={product.name} className="h-40 object-cover mb-3" />
-            <h3 className="text-lg font-semibold">{product.name}</h3>
-            <p className="text-sm text-gray-600">{product.brand}</p>
-          </div>
+          <div className="bg-white rounded-xl overflow-hidden border border-[#6F0E18] shadow-md hover:shadow-lg transition duration-300 transform hover:scale-[1.02] cursor-pointer">
+                
+                {/* Product Image */}
+                <div className="aspect-[4/3] w-full overflow-hidden">
+                    <img
+                        src={product.photo}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+
+                {/* Product Details */}
+                <div className="p-4 bg-white space-y-1.5">
+                    <h3 className="text-lg font-bold text-[#6F0E18]">{product.name}</h3>
+                    <p className="text-sm text-gray-700"><span className="font-semibold">Brand:</span> {product.brand}</p>
+                    <p className="text-sm text-gray-700"><span className="font-semibold">Category:</span> {product.category}</p>
+                    <p className="text-sm text-gray-700"><span className="font-semibold">Min Qty:</span> {product.minimum_selling_quantity}</p>
+                    <p className="text-sm text-gray-700"><span className="font-semibold">Price:</span> ${product.price}</p>
+                    
+                    <p className="text-xs text-gray-500 italic mt-2">
+                        {product.description?.slice(0, 80)}...
+                    </p>
+                </div>
+            </div>
         ))}
       </div>
       </>

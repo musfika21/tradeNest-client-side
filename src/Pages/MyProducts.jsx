@@ -10,18 +10,23 @@ const MyProducts = () => {
     const userEmail = user?.email;
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
+    const accessToken = user.accessToken;
+    console.log(accessToken)
 
-    useEffect(() =>{
-        axios.get(`${import.meta.env.VITE_SERVER_API}/my-Products?email=${userEmail}`, {
-        headers: {
-            authorization: ``
-        }
+    useEffect(() => {
+    if (!user || !user.email || !user.accessToken) return;
+
+    axios.get(`${import.meta.env.VITE_SERVER_API}/my-Products?email=${user.email}`)
+    .then((data) => {
+        setProducts(data.data);
     })
-        .then((data) => {
-            setProducts(data.data);
-        });
+    .catch((err) => {
+        console.error(err);
+        setError("Failed to fetch products.");
+    });
 
-    }, [])
+}, [user]);
+
     // delete product from database
     const handleDelete = (id) => {
         // console.log(id)

@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 const Card = ({ cat }) => {
-
-    // console.log(cat.slug)
+    
     return (
         <>
             <Link to={`/category/${cat.slug}`}>

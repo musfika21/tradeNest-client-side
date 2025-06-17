@@ -10,13 +10,19 @@ const Cart = () => {
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
 
-   useEffect(() =>{
-     axios.get(`${import.meta.env.VITE_SERVER_API}/my-Purchase?email=${userEmail}`)
-        .then(res => {
-            setProducts(res.data)
-        })
-   }, []);
+    useEffect(() => {
+    if (!user || !user.email || !user.accessToken) return;
 
+    axios.get(`${import.meta.env.VITE_SERVER_API}/my-Purchase?email=${user.email}`)
+    .then(res => {
+        setProducts(res.data);
+    })
+    .catch(err => {
+        console.error(err);
+        setError("Failed to fetch purchase data.");
+    });
+
+}, [user]);
     return (
         <div className="container mx-auto px-4 pt-15 bg-[#fef1f1] min-h-[calc(100vh-325px)]">
             <h2 className="text-3xl font-bold text-center mb-8">My Cart</h2>
@@ -46,19 +52,19 @@ const Cart = () => {
 
             {!loading && products.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {products.map((product) =>  {
+                    {products.map((product) => {
                         return (
                             <Card
-                            key={product._id}
-                            product={product}
-                        />
+                                key={product._id}
+                                product={product}
+                            />
                         )
                     }
-                        
+
                     )}
                 </div>
             )}
-            
+
         </div>
     );
 };
