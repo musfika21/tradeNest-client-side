@@ -6,9 +6,10 @@
 }
 
 .logo-style {
-    background: linear-gradient(90deg, #460911ca, #9b111f, #b51a2d98);
+    background: linear-gradient(90deg, #3E3F29, #7D8D86, #3E3F29);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    text-shadow: #BCA88D 1px 0 20px;
 }
 
 .bg-dot-grid {

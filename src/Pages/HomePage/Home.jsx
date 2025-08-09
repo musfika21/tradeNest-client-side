@@ -4,6 +4,7 @@ import Slider from './Slider';
 import Choose from "./Choose";
 import Works from "./Works";
 import Categories from '../Category/Categories';
+import CommonButton from '../../Shared/CommonButton';
 
 const Home = () => {
     return (
@@ -12,6 +13,7 @@ const Home = () => {
             <Categories/>
             <Choose/>
             <Works/>
+            <CommonButton>hello</CommonButton>
         </div>
     );
 };
