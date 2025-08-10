@@ -10,7 +10,6 @@ const Home = () => {
     return (
         <div>
             <Slider/>
-            <Categories/>
             <Choose/>
             <Works/>
             <CommonButton>hello</CommonButton>

@@ -25,7 +25,7 @@ const AllProducts = () => {
     }, []);
 
     return (
-        <div className="bg-[#fef1f1] min-h-screen">
+        <div className="min-h-screen">
             <div className="px-4 py-8 max-w-7xl mx-auto">
                 {/* Top Bar */}
                 <div className="flex flex-wrap gap-3 justify-between items-center mb-6">

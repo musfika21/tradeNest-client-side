@@ -1,4 +1,5 @@
 module.exports = {
+  darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
@@ -6,4 +7,7 @@ module.exports = {
       },
     },
   },
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
 };

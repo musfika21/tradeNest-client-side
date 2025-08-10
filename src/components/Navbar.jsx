@@ -184,13 +184,13 @@ const Navbar = () => {
                 <div
                   className={`absolute space-y-3 -right-15 transform -translate-x-1/2
                         duration-300 ease-in-out transition-all font-semibold
-                      ${theme ? 'bg-[#F1F0E4] text-black' : 'bg-gray-950 text-white'} rounded-b-lg shadow-lg w-30 p-2
+                      ${theme ? 'bg-[#F1F0E4] text-black' : 'bg-gray-950 text-white'} rounded-b-lg shadow-lg w-30 p-4
                         backdrop-blur-lg z-50
-                        ${sidebar ? "top-16 md:top-19 lg:top-21 opacity-100 scale-100" : "top-10 opacity-0 scale-90 pointer-events-none"}
+                        ${sidebar ? "top-16 md:top-19 opacity-100 scale-100" : "top-10 opacity-0 scale-90 pointer-events-none"}
                       `}
                 >
-                  <p className="text-center">{user?.displayName}</p>
-                  <CommonButton className="flex items-center gap-2 text-[#460911ca] cursor-pointer" onClick={handleSignOut}><CiLogout />Logout</CommonButton>
+                  <p className="text-center text-sm">{user?.displayName}</p>
+                  <CommonButton className="flex items-center gap-2" onClick={handleSignOut}><CiLogout />Logout</CommonButton>
                 </div>
               </div>
             </> : <>

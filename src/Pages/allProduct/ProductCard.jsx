@@ -2,12 +2,15 @@ import { Button } from '@material-tailwind/react';
 import React from 'react';
 import { CgNotes } from "react-icons/cg";
 import { Link } from 'react-router';
+import useAuth from '../../CustomHooks/UseAuth';
 
 const ProductCard = ({ product }) => {
+
+    const{theme} = useAuth();
     const { _id, photo, name, category, rating, brand } = product;
 
     return (
-        <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-4">
+        <div className={`rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-4 ${theme? "" : ""}`}>
             {/* Image */}
             <img
                 src={photo}

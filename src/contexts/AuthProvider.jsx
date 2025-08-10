@@ -40,6 +40,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         document.body.className = theme ? 'dark' : '';
     }, [theme]);
+    
 
     // create a user with email and password
     const createUser = (email, password) => {

@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "auth-integration-68034"
-  }
+    "default": "auth-integration-68034",
+    "tradeNest": "trade-nest01"
+  },
+  "targets": {},
+  "etags": {}
 }

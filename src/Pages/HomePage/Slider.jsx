@@ -12,8 +12,12 @@ import slide5 from '../../assets/bannerImages/slide5.png';
 import slide6 from '../../assets/bannerImages/slide6.png';
 import CommonButton from "../../Shared/CommonButton";
 import { Link } from "react-router";
+import useAuth from "../../CustomHooks/UseAuth";
 
 const Slider = () => {
+    
+    const {theme} = useAuth();
+
     const slides = [
         { 
             img: slide1, 
@@ -65,10 +69,10 @@ const Slider = () => {
                 spaceBetween={0}
                 slidesPerView={1}
                 loop={true}
-                // autoplay={{
-                //     delay: 3000,
-                //     disableOnInteraction: false
-                // }}
+                autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false
+                }}
                 pagination={{ clickable: true }}
                 navigation={true}
                 modules={[ Pagination, Navigation]}
@@ -85,10 +89,10 @@ const Slider = () => {
 
                             {/* Text Box */}
                             <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-2 sm:px-4">
-                                <div className="bg-black/60 rounded-lg py-4 px-4 sm:py-6 sm:px-8 md:py-8 md:px-12 lg:px-16 max-w-[90%] sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-2xl">
-                                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-bold text-white">{slide.title}</h1>
-                                    <p className="mt-2 sm:mt-4 text-base sm:text-lg md:text-xl xl:text-xl text-white">{slide.subtitle}</p>
-                                    <CommonButton className="mt-2 sm:mt-3 text-white"><Link to={slide.link}>{slide.text}</Link></CommonButton>
+                                <div className={`${theme ? "bg-white/60" : "bg-black/60"} rounded-lg py-4 px-4 sm:py-6 sm:px-8 md:py-8 md:px-12 lg:px-16 max-w-[90%] sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-2xl`}>
+                                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-bold">{slide.title}</h1>
+                                    <p className="mt-2 sm:mt-4 text-base sm:text-lg md:text-xl xl:text-xl">{slide.subtitle}</p>
+                                    <CommonButton className="mt-2 sm:mt-3"><Link to={slide.link}>{slide.text}</Link></CommonButton>
                                 </div>
                             </div>
                         </div>
