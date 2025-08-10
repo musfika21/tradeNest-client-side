@@ -12,7 +12,6 @@ const Home = () => {
             <Slider/>
             <Choose/>
             <Works/>
-            <CommonButton>hello</CommonButton>
         </div>
     );
 };

@@ -4,7 +4,7 @@ Welcome to the frontend of **B2B TradeNest**, a B2B wholesale marketplace built 
 
 ## 🚀 Live Site
 
-🔗 [Live Demo](https://auth-integration-68034.web.app/)
+🔗 [Live Demo](https://trade-nest01.web.app/)
 
 ---
 
