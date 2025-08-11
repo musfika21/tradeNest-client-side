@@ -3,6 +3,7 @@ import useAuth from '../CustomHooks/UseAuth';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import CommonButton from '../Shared/CommonButton';
 
 const MyProducts = () => {
 
@@ -29,7 +30,6 @@ const MyProducts = () => {
 
     // delete product from database
     const handleDelete = (id) => {
-        // console.log(id)
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -62,7 +62,7 @@ const MyProducts = () => {
     }
 
     return (
-        <div className="container mx-auto px-4 pt-15 bg-[#fef1f1] min-h-[calc(100vh-325px)] pb-5">
+        <div className="container mx-auto px-4 pt-15 min-h-[calc(100vh-325px)] pb-5">
             <h2 className="text-3xl font-bold text-center mb-8">
                 My Products
             </h2>
@@ -81,17 +81,13 @@ const MyProducts = () => {
 
             {!loading && !error && products.length === 0 && (
                 <div className="text-center">
-                    <p className="text-lg">No products found.</p>
+                    <p className={`text-lg ${theme ? "text-gray-600" : "text-gray-300"}`}>No products found.</p>
                     <Link to='add-Product'>
-                        <button
-                            className="mt-6 bg-[#6F0E18] hover:bg-[#8a0a19] text-white text-xs sm:text-sm py-2 px-4 rounded-sm font-medium text-center cursor-pointer"
-                        >
-                            Add Product
-                        </button>
+                        <CommonButton className='mt-5'>Add Product</CommonButton>
                     </Link>
                 </div>
             )}
-
+            
             {!loading && !error && products.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {products.map((product) => (

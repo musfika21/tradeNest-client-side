@@ -6,7 +6,7 @@ const Works = () => {
     const {theme} = useAuth();
 
     return (
-        <section className="py-16 px-4 md:px-10 lg:px-20">
+        <section className="pt-16 px-4 md:px-10 lg:px-20">
             <div className="text-center">
                 <h2 className={`text-3xl md:text-4xl font-bold ${theme? "text-[#3E3F29]" : "text-[#BCA88D]"} mb-6`}>How It Works</h2>
                 <p className={`${theme ? "text-gray-600" : "text-gray-300"} max-w-2xl mx-auto mb-12`}>

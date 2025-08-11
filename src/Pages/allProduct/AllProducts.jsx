@@ -22,7 +22,7 @@ const AllProducts = () => {
                 console.error("❌ Error fetching products:", err);
                 setLoading(false);
             });
-    }, []);
+    }, [products]);
 
     return (
         <div className="min-h-screen">
@@ -36,11 +36,11 @@ const AllProducts = () => {
                     {/* Toggle View */}
                     <div className="flex items-center gap-3">
                         <span className="hidden md:inline font-medium text-sm">View:</span>
-                        <div className="flex rounded-lg overflow-hidden border border-gray-300">
+                        <div className="flex rounded overflow-hidden border border-gray-300">
                             <button
                                 onClick={() => setView("card")}
                                 className={`px-3 py-1 text-xs sm:text-sm md:text-base transition cursor-pointer ${view === "card"
-                                    ? "bg-[#6F0E18] text-white"
+                                    ? "bg-[#3E3F29]"
                                     : "bg-white text-gray-700 hover:bg-gray-100"
                                     }`}
                             >
@@ -49,7 +49,7 @@ const AllProducts = () => {
                             <button
                                 onClick={() => setView("table")}
                                 className={`px-3 py-1 text-xs sm:text-sm md:text-base transition cursor-pointer ${view === "table"
-                                    ? "bg-[#6F0E18] text-white"
+                                    ? "bg-[#3E3F29]"
                                     : "bg-white text-gray-700 hover:bg-gray-100"
                                     }`}
                             >
@@ -61,7 +61,7 @@ const AllProducts = () => {
 
                 {/* Card View */}
                 {view === "card" && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
                         {products.map((product) => (
                             <ProductCard key={product._id} product={product} />
                         ))}

@@ -35,7 +35,44 @@ const categories = [
     {
         name: "Office Supplies & Stationery",
         slug: 'office_supplies_&_stationery',
+    },
+    {
+        name: "Sports & Outdoor Equipment",
+        slug: 'sports_&_outdoor_equipment',
+    },
+    {
+        name: "Toys, Games & Hobbies",
+        slug: 'toys_&_games_&_hobbies',
+    },
+    {
+        name: "Food & Beverages",
+        slug: 'food_&_beverages',
+    },
+    {
+        name: "Construction Materials & Hardware",
+        slug: 'construction_materials_&_hardware',
+    },
+    {
+        name: "Agriculture & Farming Supplies",
+        slug: 'agriculture_&_farming_supplies',
+    },
+    {
+        name: "Pet Supplies & Accessories",
+        slug: 'pet_supplies_&_accessories',
+    },
+    {
+        name: "Medical Supplies & Equipment",
+        slug: 'medical_supplies_&_equipment',
+    },
+    {
+        name: "Art, Crafts & DIY Materials",
+        slug: 'art_&_crafts_&_diy_materials',
+    },
+    {
+        name: "Travel & Luggage",
+        slug: 'travel_&_luggage',
     }
+
 ];
 
 const AddProduct = () => {
@@ -94,8 +131,8 @@ const AddProduct = () => {
     };
 
     return (
-        <div className="bg-[#fef1f1] py-10 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto p-6 sm:p-8 bg-white rounded-xl shadow-md">
+        <div className="py-10 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mx-auto p-6 sm:p-8 rounded-xl shadow-md">
                 <h2 className="text-2xl font-bold mb-6 text-center">Add New Product</h2>
 
                 <form onSubmit={handleAddProduct} className="space-y-6">

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Link, NavLink } from "react-router"; // Updated to react-router-dom
+import React, { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router";
 import logo from '../assets/logo.png';
 import { TiHome, TiHomeOutline } from "react-icons/ti";
-import { BiCart, BiCategory, BiShoppingBag, BiSolidCart, BiSolidCategory, BiSolidShoppingBags } from "react-icons/bi";
-import { IoIosAddCircle, IoIosAddCircleOutline } from "react-icons/io";
+import { BiCart, BiCategory, BiShoppingBag, BiSolidCart, BiSolidShoppingBags } from "react-icons/bi";
+import { IoIosAddCircle, IoIosAddCircleOutline, IoMdArrowDropdown } from "react-icons/io";
 import { FaHeart, FaMoon, FaRegHeart } from "react-icons/fa";
 import { RiMenuFold2Line, RiMenuUnfold2Line } from "react-icons/ri";
 import { CiLogin, CiLogout } from "react-icons/ci";
@@ -13,11 +13,41 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { ImSun } from "react-icons/im";
 import CommonButton from "../Shared/CommonButton";
 
+const categories = [
+  { name: "Electronics & Gadgets", slug: "electronics_&_gadgets" },
+  { name: "Home & Kitchen Appliances", slug: "home_&_kitchen_appliances" },
+  { name: "Fashion & Apparel", slug: "fashion_&_apparel" },
+  { name: "Industrial Machinery & Tools", slug: "industrial_machinery_&_tools" },
+  { name: "Health & Beauty", slug: "health_&_beauty" },
+  { name: "Automotive Parts & Accessories", slug: "automotive_parts_&_accessories" },
+];
+
 const Navbar = () => {
 
   const { user, logout, toggleTheme, theme } = useAuth();
   const [open, setOpen] = useState(false);
   const [sidebar, setSideBar] = useState(false);
+  const [showCategories, setShowCategories] = useState(false);
+
+  const navigate = useNavigate();
+  const dropdownRef = useRef(null);
+
+  const handleCategoryClick = (slug) => {
+    navigate(`/category/${slug}`);
+    setShowCategories(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowCategories(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const NavLinks = () => (
     <>
@@ -35,19 +65,40 @@ const Navbar = () => {
         </NavLink>
       </li>
 
-      <li className="text-lg flex items-center space-x-2">
-        <NavLink
-          className={({ isActive }) => (isActive ? `underline underline-offset-8 ${theme ? 'text-[#3E3F29]' : 'text-[#7D8D86]'}` : '')}
-          to="/categories"
+      {/* dropdown categories */}
+      <li ref={dropdownRef} className="relative text-lg flex items-center space-x-2 cursor-pointer">
+        {/* Trigger */}
+        <div
+          onClick={() => setShowCategories((prev) => !prev)}
+          className={`flex items-center transition-colors duration-200
+        hover:${theme ? "text-[#3E3F29]" : "text-[#7D8D86]"}
+        ${showCategories ? (theme ? "text-[#3E3F29]" : "text-[#7D8D86]") : ""}
+      `}
         >
-          {({ isActive }) => (
-            <div className="flex items-center">
-              {isActive ? <BiSolidCategory /> : <BiCategory />}
-              <span className="ml-2 text-[15px] font-bold">Categories</span>
-            </div>
-          )}
-        </NavLink>
+          <BiCategory className="" />
+          <span className="text-[15px] font-bold">Categories</span>
+          <IoMdArrowDropdown
+            className={`ml-1 transform transition-transform duration-200 ${showCategories ? "rotate-180" : ""
+              }`}
+          />
+        </div>
+
+        {/* Dropdown */}
+        {showCategories && (
+          <ul className={`absolute top-10 left-0 mt-2 ${theme ? 'bg-[#F1F0E4] text-black' : 'bg-[#1F1F1F] text-white'} border shadow-lg rounded-md w-60 z-50`}>
+            {categories.map((cat) => (
+              <li
+                key={cat.slug}
+                onClick={() => handleCategoryClick(cat.slug)}
+                className={`px-4 py-2 ${theme? "hover:bg-[#BCA88D]" : "hover:bg-[#353935]"} cursor-pointer`}
+              >
+                {cat.name}
+              </li>
+            ))}
+          </ul>
+        )}
       </li>
+
 
       <li className="text-lg flex items-center space-x-2">
         <NavLink
