@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { LuMessageSquareWarning } from "react-icons/lu";
 import { Button } from '@material-tailwind/react';
 import Swal from 'sweetalert2';
+import CommonButton from '../../Shared/CommonButton';
 
 Modal.setAppElement('#root');
 
@@ -14,7 +15,7 @@ const Details = () => {
     const product = useLoaderData();
     const { _id, name, photo, main_quantity, minimum_selling_quantity, brand, price, category, description, rating } = product;
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, theme } = useAuth();
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [buyQuantity, setBuyQuantity] = useState(minimum_selling_quantity);
@@ -64,9 +65,9 @@ const Details = () => {
             });
     }
     return (
-        <div className='bg-[#fef1f1]'>
-            <div className="lg:w-5xl xl:w-6xl mx-auto py-10 px-4 border-2 border-gray-100">
-                <div className="flex flex-col md:flex-row gap-4 items-center p-5 bg-white rounded-md shadow-lg overflow-hidden">
+        <div>
+            <div className="lg:w-5xl xl:w-6xl mx-auto py-10 px-4">
+                <div className={`flex flex-col md:flex-row gap-4 items-center p-5 rounded-md shadow-lg overflow-hidden ${theme ? "bg-white" : "bg-[#1F1F1F]"}`}>
                     <div className='flex-1'>
                         <img src={photo} alt={name} className="xl:w-full xl:h-full object-cover" />
                     </div>
@@ -93,9 +94,9 @@ const Details = () => {
                         <div className='border border-gray-200'></div>
                         <p className="text-xs md:text-sm lg:text-base mt-4">{description}</p>
                         <div className="mt-4 flex justify-end text-white">
-                            <Button
+                            <CommonButton
                                 onClick={() => setModalIsOpen(true)}
-                                className="bg-[#6F0E18] hover:bg-[#8a0a19] py-3 px-4 rounded-sm font-medium flex items-center gap-3 text-center cursor-pointer">Add to Cart</Button>
+                                >Add to Cart</CommonButton>
                         </div>
                     </div>
                 </div>
@@ -144,7 +145,7 @@ const Details = () => {
 
                     {/* Action Buttons */}
                     <div className="flex justify-between space-x-4">
-                        <button
+                        <CommonButton
                             disabled={buyQuantity < minimum_selling_quantity || buyQuantity > main_quantity}
                             onClick={handleAddCart}
                             className={`px-5 py-2 rounded-md transition ${buyQuantity < minimum_selling_quantity || buyQuantity > main_quantity
@@ -153,7 +154,7 @@ const Details = () => {
                                 }`}
                         >
                             Confirm Purchase
-                        </button>
+                        </CommonButton>
                         <button
                             onClick={() => setModalIsOpen(false)}
                             className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-5 py-2 rounded-md transition cursor-pointer"

@@ -7,7 +7,7 @@ import CommonButton from '../../Shared/CommonButton';
 const ProductCard = ({ product }) => {
 
     const { theme } = useAuth();
-    const { _id, photo, name} = product;
+    const { _id, photo, name, description } = product;
 
     return (
         <div className={`rounded shadow-md hover:shadow-xl transition duration-300 p-4 ${theme ? "bg-white" : "bg-[#343434]"}`}>
@@ -22,13 +22,19 @@ const ProductCard = ({ product }) => {
 
             {/* Product Info */}
             <div className="space-y-2">
-                <h2 className={`text-xs  mt-2 font-semibold text-center ${theme? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>{name}</h2>
+                <h2 className={`text-xs  mt-2 font-semibold text-center ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>{name}</h2>
+                <p className={`text-[10px] ${theme ? "text-gray-600" : "text-gray-300"}`}>
+                    {description.length > 23
+                        ? description.slice(0, 23) + "..."
+                        : description}
+                </p>
+
             </div>
 
             {/* Button */}
             <div className='flex justify-between'>
                 <Link to={`/product-Details/${_id}`}>
-                   <p className={`text-xs mt-3 underline`}>See More</p>
+                    <p className={`text-xs mt-3 underline`}>See More</p>
                 </Link>
                 {/* <Link to={`/update-Product/${product._id}`}>
                     <div className='mt-4 flex justify-end '>

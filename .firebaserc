@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "auth-integration-68034",
+    "default": "trade-nest01",
     "tradeNest": "trade-nest01"
   },
   "targets": {},

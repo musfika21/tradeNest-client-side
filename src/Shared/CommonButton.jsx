@@ -2,11 +2,12 @@ import React from 'react';
 import useAuth from '../CustomHooks/UseAuth';
 import { Button } from "@material-tailwind/react";
 
-const CommonButton = ({ children, onClick, disabled, className = "" }) => {
+const CommonButton = ({ children, onClick, disabled, className = "", type = "button" }) => {
     const { theme } = useAuth();
 
     return (
         <Button
+            type={type}
             onClick={onClick}
             disabled={disabled}
             className={`border ${

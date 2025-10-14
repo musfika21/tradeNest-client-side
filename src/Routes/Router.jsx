@@ -4,7 +4,6 @@ import MainLayout from '../Layouts/MainLayout';
 import Home from '../Pages/HomePage/Home';
 import Login from '../Pages/LoginPage/Login';
 import Register from '../Pages/RegisterPage/Register';
-import NotFound from '../Pages/NotFound';
 import ResetPassword from '../Pages/ResetPassword';
 import PrivateRoutes from './PrivateRoutes';
 import AddProduct from '../Pages/AddProduct';
@@ -16,6 +15,7 @@ import Loader from '../components/Loader';
 import UpdateProduct from '../Pages/UpdateProduct';
 import FilteredCategory from '../Pages/categoryPages/FilteredCategory';
 import Cart from '../Pages/cart/Cart';
+import NotFound from '../Pages/NotFoundPage';
 
 const Router = createBrowserRouter([
     {
