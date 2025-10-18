@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import CustomizedButton from '../../Shared/CustomizedButton';
+import CommonButton from '../../Shared/CommonButton';
 import SocialLogins from '../../Shared/SocialLogins';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { IoEye, IoEyeOff, IoPerson } from 'react-icons/io5';
-import welcome from '../../assets/LottieFiles/welcome.json'
-import Lottie from 'react-lottie';
 import { MdEmail } from 'react-icons/md';
 import { IoMdPhotos } from 'react-icons/io';
 import Swal from 'sweetalert2';
@@ -12,164 +10,318 @@ import { toast } from 'react-toastify';
 import useAuth from '../../CustomHooks/UseAuth';
 
 const Register = () => {
-
-    const { createUser, updateUserInfo, setUser } = useAuth();
+    const { createUser, updateUserInfo, setUser, theme } = useAuth();
     const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [touched, setTouched] = useState({});
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
 
-    // validation of the password
     const validationOfPassword = (password) => {
-        if (!password) {
-            return "Password is Required";
-        } if (password.length < 6) {
-            return "Password must be 6 character"
-        } if (!/[a-z]/.test(password)) {
-            return "Password must contain at least one lowercase letter";
-        } if (!/[A-Z]/.test(password)) {
-            return "Password must contain at least one uppercase letter";
+        if (!password) return 'Password is Required';
+        if (password.length < 6) return 'Password must be 6 characters';
+        if (!/[a-z]/.test(password)) return 'Password must contain at least one lowercase letter';
+        if (!/[A-Z]/.test(password)) return 'Password must contain at least one uppercase letter';
+    };
+
+    const validateField = (name, value) => {
+        let error = '';
+        switch (name) {
+            case 'name':
+                if (!value.trim()) error = 'Name is required';
+                else if (value.trim().length < 3) error = 'Name must be at least 3 characters';
+                break;
+            case 'email':
+                if (!value.trim()) error = 'Email is required';
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = 'Please enter a valid email';
+                break;
+            case 'photo':
+                if (!value.trim()) error = 'Photo URL is required';
+                else if (!/^https?:\/\/.+\..+/.test(value)) error = 'Please enter a valid URL';
+                break;
+            case 'password':
+                error = validationOfPassword(value) || '';
+                break;
+            default:
+                break;
         }
-    }
+        return error;
+    };
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        setTouched({ ...touched, [name]: true });
+        const error = validateField(name, value);
+        setErrors({ ...errors, [name]: error });
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (touched[name]) {
+            const error = validateField(name, value);
+            setErrors({ ...errors, [name]: error });
+        }
+    };
 
     const handleSignUp = (e) => {
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
-        const { email, password, name, photo, ...userProfile } = Object.fromEntries(formData)
+        const { email, password, name, photo } = Object.fromEntries(formData);
 
-        const validatePassword = validationOfPassword(password);
-        if (validatePassword) {
-            setErrorMessage(validatePassword);
+        const newErrors = {};
+        const fieldNames = ['name', 'email', 'photo', 'password'];
+        fieldNames.forEach((field) => {
+            const value = formData.get(field);
+            const error = validateField(field, value);
+            if (error) newErrors[field] = error;
+        });
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setTouched(fieldNames.reduce((acc, f) => ({ ...acc, [f]: true }), {}));
+            toast.error('Please fix all errors before submitting', {
+                position: 'top-right',
+                className: theme
+                    ? 'bg-red-50 text-red-800 border border-red-300'
+                    : 'bg-red-900 text-red-100 border border-red-700',
+            });
             return;
         }
-        // create user
-        createUser(email, password)
-            .then((result) => {
 
-                // Update user profile
-                updateUserInfo({ displayName: name, photoURL: photo })
-                    .then(() => {
-                        setUser((currentUser) => {
-                            console.log(currentUser, name, photo);
-                            currentUser.displayName = name;
-                            currentUser.photoURL = photo;
-                            Swal.fire({
-                                title: "Successfully Registered",
-                                icon: "success",
-                                draggable: true
-                            });
-                            navigate(location.state || '/');
-                        })
-                    })
+        createUser(email, password)
+            .then(() => {
+                updateUserInfo({ displayName: name, photoURL: photo }).then(() => {
+                    setUser((currentUser) => {
+                        currentUser.displayName = name;
+                        currentUser.photoURL = photo;
+                        Swal.fire({
+                            title: 'Successfully Registered',
+                            icon: 'success',
+                            draggable: true,
+                        });
+                        navigate(location.state || '/');
+                    });
+                });
             })
             .catch((error) => {
                 setErrorMessage(error.message);
                 toast.error(error.message, {
-                    position: "top-right",
-                    className: "bg-red-100 text-red-800 border border-red-300 font-medium rounded-lg shadow-md px-4 py-3",
-                    icon: "❌",
+                    position: 'top-right',
+                    className: theme
+                        ? 'bg-red-50 text-red-800 border border-red-300'
+                        : 'bg-red-900 text-red-100 border border-red-700',
                 });
-            })
-    }
-
-    // lottie files function
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: welcome,
-        rendererSettings: {
-            preserveAspectRatio: "xMidYMid slice"
-        }
+            });
     };
 
     return (
-        <div className='bg-image py-20 text-white'>
-            <div className='bg-image flex flex-col lg:flex-row justify-between p-6 items-center w-full md:w-10/12 lg:w-11/12 mx-auto shadow-2xl/90 inset-shadow-xl/10'>
-                <div className='flex-1 px-3'>
-                    <Lottie options={defaultOptions} className='h-10 sm:h-12 md:h-15' />
-                    <p className='text-sm md:text-base rounded-md bg-black/20 p-4 w-11/12 sm:w-4/5 text-center mx-auto text-shadow-lg/30 lg:mt-20'>to our Trade Nest — connecting bulk suppliers with retailers and buyers across multiple product categories. Enjoy secure transactions, easy product management, and a seamless buying experience, all in one responsive platform</p>
+        <div
+            className={`py-5 md:py-10 min-h-screen flex items-center justify-center${theme
+                ? 'bg-gradient-to-br from-gray-50 to-gray-100'
+                : 'bg-gradient-to-br from-[#1a1a1a] to-[#2a2a2a]'
+                }`}
+        >
+            {/* Registration Form */}
+            <div
+                className={`p-6 sm:p-8 md:p-10 rounded-2xl transition-all duration-300 w-11/12 mx-auto lg:w-9/12 xl:8/12 ${theme ? 'bg-white/60' : 'bg-[#2a2a2a]/70'
+                    } backdrop-blur-md`}
+            >
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <h1
+                        className={`xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl  font-bold mb-3 ${theme ? 'text-[#3E3F29]' : 'text-[#E5D3B3]'
+                            }`}
+                    >
+                        Create Your Account
+                    </h1>
+                    <div
+                        className={`h-1 w-20 mx-auto rounded-full ${theme ? 'bg-[#7D8D86]' : 'bg-[#BCA88D]'
+                            }`}
+                    />
+                    <p
+                        className={`mt-3 text-xs md:text-sm lg:text-base ${theme ? 'text-gray-600' : 'text-gray-400'
+                            }`}
+                    >
+                        Join us and start your journey today
+                    </p>
                 </div>
-                {/* form */}
-                <div className='flex-1 w-full sm:w-10/12 xl:w-4/5 mx-auto'>
-                    <div className="p-8 space-y-3 rounded-sm my-4 md:my-10 bg-black/20 ">
-                        <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-center">Register Now!</h1>
-                        <form onSubmit={handleSignUp} className="space-y-4 md:space-y-6">
-                            {/* name field */}
-                            <div className="space-y-1 text-sm">
-                                <label className="block ">Enter Your Name: </label>
-                                <div className="relative">
-                                    <input type="text" name="name" placeholder="Enter Name" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
 
-                                    <IoPerson className="absolute right-5 top-1/2 transform -translate-y-1/2" />
-
-                                </div>
-                            </div>
-                            {/* email field */}
-                            <div className="space-y-1 text-sm">
-                                <label className="block ">Enter Your Email: </label>
-                                <div className="relative">
-                                    <input type="email" name="email" placeholder="Enter Email" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-
-                                    <MdEmail className="absolute right-5 top-1/2 transform -translate-y-1/2" />
-
-                                </div>
-                            </div>
-                            {/* photo URL */}
-                            <div className="space-y-1 text-sm">
-                                <label className="block ">Enter Your Photo URL: </label>
-                                <div className="relative">
-                                    <input type="url" name="photo" placeholder="Enter Photo URL" className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-
-                                    <IoMdPhotos className="absolute right-5 top-1/2 transform -translate-y-1/2" />
-
-                                </div>
-                            </div>
-                            {/* password field */}
-                            <div className="space-y-1 text-sm">
-                                <label className="block">Enter A Password: </label>
-                                <div className="relative">
-                                    <input
-                                        type={showPassword ? "text" : "password"}
-                                        name="password" placeholder="Enter Password"
-                                        className="w-full px-3 py-1.5  md:px-4 md:py-3 rounded-md bg-white/20 border border-[#8a0a196f] focus:border-[#6F0E18] focus:outline-none" />
-                                    <button onClick={() => setShowPassword(!showPassword)}>
-                                        {
-                                            showPassword ?
-                                                <IoEye className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" /> :
-                                                <IoEyeOff className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer" />
-                                        }
-                                    </button>
-                                </div>
-                            </div>
-                            {/* privacy policy */}
-                            <label className="flex items-center">
-                                <input type="checkbox" className="form-checkbox" />
-                                <span class="block ml-2 text-xs lg:text-base font-medium cursor-pointer">Agree to Privacy Policy</span>
+                {/* Form */}
+                <form onSubmit={handleSignUp} className="space-y-6">
+                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
+                        {/* Name */}
+                        <div>
+                            <label
+                                className={`block mb-2 text-sm font-semibold ${theme ? 'text-[#3E3F29]' : 'text-[#BCA88D]'
+                                    }`}
+                            >
+                                Full Name
                             </label>
-                            {
-                                errorMessage &&
-                                <p className='text-red-500'>{errorMessage}</p>
-                            }
-                            {/* button */}
-                            <div className='flex justify-center'>
-                                <CustomizedButton text="Register" type="submit"></CustomizedButton>
+                            <div className="relative">
+                                <IoPerson
+                                    className={`absolute left-4 top-1/2 -translate-y-1/2 ${theme ? 'text-[#7D8D86]' : 'text-[#BCA88D]'
+                                        }`}
+                                />
+                                <input
+                                    type="text"
+                                    name="name"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    placeholder="Enter your full name"
+                                    className={`w-full pl-11 pr-4 py-3 rounded-lg border outline-none transition-all duration-200 ${theme
+                                        ? 'bg-white/40 text-gray-800 border-[#7D8D86]/30 focus:border-[#7D8D86] focus:ring-[#7D8D86]/20'
+                                        : 'bg-[#1a1a1a] text-gray-200 border-[#BCA88D]/30 focus:border-[#BCA88D] focus:ring-[#BCA88D]/20'
+                                        } ${touched.name && errors.name ? 'border-red-500 ring-red-500/20' : ''}`}
+                                />
                             </div>
-                        </form>
-                        <div className="flex items-center pt-4 space-x-1">
-                            <div className="flex-1 h-px sm:w-16 bg-white"></div>
-                            <p className="px-3 text-sm ">OR</p>
-                            <div className="flex-1 h-px sm:w-16 bg-white"></div>
+                            {touched.name && errors.name && (
+                                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                            )}
                         </div>
-                        <SocialLogins />
-                        <p className="text-xs md:text-base text-center sm:px-6">Already Have an Account? 😊
-                            <Link to='/login-user' className="underline hover:text-[#f36c7c]"> Login</Link>
-                        </p>
-                    </div>
-                </div >
-            </div >
-        </div >
 
+                        {/* Email */}
+                        <div>
+                            <label
+                                className={`block mb-2 text-sm font-semibold ${theme ? 'text-[#3E3F29]' : 'text-[#BCA88D]'
+                                    }`}
+                            >
+                                Email Address
+                            </label>
+                            <div className="relative">
+                                <MdEmail
+                                    className={`absolute left-4 top-1/2 -translate-y-1/2 ${theme ? 'text-[#7D8D86]' : 'text-[#BCA88D]'
+                                        }`}
+                                />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    placeholder="Enter your email"
+                                    className={`w-full pl-11 pr-4 py-3 rounded-lg border outline-none transition-all duration-200 ${theme
+                                        ? 'bg-white/40 text-gray-800 border-[#7D8D86]/30 focus:border-[#7D8D86] focus:ring-[#7D8D86]/20'
+                                        : 'bg-[#1a1a1a] text-gray-200 border-[#BCA88D]/30 focus:border-[#BCA88D] focus:ring-[#BCA88D]/20'
+                                        } ${touched.email && errors.email ? 'border-red-500 ring-red-500/20' : ''}`}
+                                />
+                            </div>
+                            {touched.email && errors.email && (
+                                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-3'>
+                        {/* Photo URL */}
+                        <div>
+                            <label
+                                className={`block mb-2 text-sm font-semibold ${theme ? 'text-[#3E3F29]' : 'text-[#BCA88D]'
+                                    }`}
+                            >
+                                Profile Photo URL
+                            </label>
+                            <div className="relative">
+                                <IoMdPhotos
+                                    className={`absolute left-4 top-1/2 -translate-y-1/2 ${theme ? 'text-[#7D8D86]' : 'text-[#BCA88D]'
+                                        }`}
+                                />
+                                <input
+                                    type="url"
+                                    name="photo"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    placeholder="https://example.com/photo.jpg"
+                                    className={`w-full pl-11 pr-4 py-3 rounded-lg border outline-none transition-all duration-200 ${theme
+                                        ? 'bg-white/40 text-gray-800 border-[#7D8D86]/30 focus:border-[#7D8D86] focus:ring-[#7D8D86]/20'
+                                        : 'bg-[#1a1a1a] text-gray-200 border-[#BCA88D]/30 focus:border-[#BCA88D] focus:ring-[#BCA88D]/20'
+                                        } ${touched.photo && errors.photo ? 'border-red-500 ring-red-500/20' : ''}`}
+                                />
+                            </div>
+                            {touched.photo && errors.photo && (
+                                <p className="text-red-500 text-sm mt-1">{errors.photo}</p>
+                            )}
+                        </div>
+
+                        {/* Password */}
+                        <div>
+                            <label
+                                className={`block mb-2 text-sm font-semibold ${theme ? 'text-[#3E3F29]' : 'text-[#BCA88D]'
+                                    }`}
+                            >
+                                Password
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    name="password"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    placeholder="Create a strong password"
+                                    className={`w-full pr-11 pl-4 py-3 rounded-lg border outline-none transition-all duration-200 ${theme
+                                        ? 'bg-white/40 text-gray-800 border-[#7D8D86]/30 focus:border-[#7D8D86] focus:ring-[#7D8D86]/20'
+                                        : 'bg-[#1a1a1a] text-gray-200 border-[#BCA88D]/30 focus:border-[#BCA88D] focus:ring-[#BCA88D]/20'
+                                        } ${touched.password && errors.password ? 'border-red-500 ring-red-500/20' : ''}`}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors ${theme
+                                        ? 'text-[#7D8D86] hover:text-[#3E3F29]'
+                                        : 'text-[#BCA88D] hover:text-white'
+                                        }`}
+                                >
+                                    {showPassword ? <IoEye size={20} /> : <IoEyeOff size={20} />}
+                                </button>
+                            </div>
+                            {touched.password && errors.password && (
+                                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Submit */}
+                    <div className="pt-4 text-center">
+                        <CommonButton type="submit" className="w-full sm:w-auto px-12 py-3 text-base">
+                            Create Account
+                        </CommonButton>
+                    </div>
+                </form>
+
+                {/* Divider */}
+                <div className="flex items-center py-6">
+                    <div className={`flex-1 h-px ${theme ? 'bg-[#7D8D86]/30' : 'bg-[#BCA88D]/30'}`} />
+                    <span
+                        className={`px-4 text-sm ${theme ? 'text-gray-500' : 'text-gray-400'
+                            }`}
+                    >
+                        OR
+                    </span>
+                    <div className={`flex-1 h-px ${theme ? 'bg-[#7D8D86]/30' : 'bg-[#BCA88D]/30'}`} />
+                </div>
+
+                <div className='flex justify-center'>
+                    <SocialLogins />
+                </div>
+
+                {/* Login link */}
+                <p
+                    className={`text-center text-sm md:text-base mt-4 ${theme ? 'text-gray-600' : 'text-gray-400'
+                        }`}
+                >
+                    Already have an account?{' '}
+                    <Link
+                        to="/login-user"
+                        className={`font-semibold underline transition-colors ${theme
+                            ? 'text-[#3E3F29] hover:text-[#7D8D86]'
+                            : 'text-[#BCA88D] hover:text-white'
+                            }`}
+                    >
+                        Sign In
+                    </Link>
+                </p>
+            </div>
+        </div>
     );
 };
 

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 
 const SocialLogins = () => {
 
-  const { GoogleLogin } = useAuth();
+  const { GoogleLogin, theme } = useAuth();
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
@@ -27,7 +27,10 @@ const SocialLogins = () => {
       <button onClick={handleGoogleLogin}
         aria-label="Login with Google"
         type="button"
-        className="flex items-center bg-[#2D0509] text-white justify-center w-full py-2 space-x-4 border rounded-sm cursor-pointer hover:shadow-sm hover:shadow-white">
+        className={`${theme
+            ? "border-[#3E3F29] hover:bg-[#3E3F29] hover:text-white text-[#3E3F29]"
+            : "border-[#7D8D86] hover:text-black text-[#7D8D86] hover:bg-[#7D8D86]"
+          } flex items-center justify-center px-4 py-2 space-x-4 border rounded-sm cursor-pointer hover:shadow-sm hover:shadow-white`}>
         <FcGoogle />
         <p>Login with Google</p>
       </button>

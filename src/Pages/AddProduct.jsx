@@ -305,90 +305,92 @@ const AddProduct = () => {
             });
     };
     return (
-        <div className="py-16 px-4 sm:px-6 lg:px-8">
-            <div className={`max-w-4xl mx-auto ${theme ? "bg-white" : "bg-[#343434]"} p-8 sm:p-10 rounded-md shadow-2xl`}>
+        <div className="py-5 px-4 sm:px-6 lg:px-8">
+            <div className={`max-w-4xl mx-auto ${theme ? "bg-white/10" : "bg-[#343434]"} p-8 sm:p-10 rounded-md shadow-2xl`}>
                 {/* Header Section */}
                 <div className="text-center mb-10">
-                    <h2 className={`text-3xl sm:text-4xl font-bold mb-3 ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                    <h2 className={`xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
                         Add New Product
                     </h2>
                     <div className="flex justify-center mb-4">
                         <div className={`h-1 w-24 rounded-full ${theme ? "bg-[#7D8D86]" : "bg-[#BCA88D]"}`}></div>
                     </div>
-                    <p className={`${theme ? "text-gray-600" : "text-gray-300"} max-w-2xl mx-auto`}>
+                    <p className={`${theme ? "text-gray-600" : "text-gray-300"} max-w-2xl mx-auto text-xs md:text-sm lg:text-base`}>
                         List your wholesale products and reach thousands of potential buyers
                     </p>
                 </div>
 
                 <form onSubmit={handleAddProduct} className="space-y-6">
-                    {/* Product Image */}
-                    <div className="space-y-2">
-                        <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
-                            Product Image URL
-                        </label>
-                        <input
-                            type="url"
-                            name="photo"
-                            placeholder="https://example.com/product-image.jpg"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            className={`w-full px-4 py-3 rounded ${theme
-                                ? "bg-white border text-gray-800"
-                                : "bg-[#2a2a2a] border text-gray-200"
-                                } ${touched.photo && errors.photo
-                                    ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                                    : theme
-                                        ? "border-[#7D8D86]/30 focus:border-[#7D8D86]"
-                                        : "border-[#BCA88D]/30 focus:border-[#BCA88D]"
-                                } focus:outline-none transition-all duration-300 focus:ring-2 ${touched.photo && errors.photo ? "" : theme ? "focus:ring-[#7D8D86]/20" : "focus:ring-[#BCA88D]/20"
-                                }`}
-                        />
-                        {touched.photo && errors.photo && (
-                            <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                </svg>
-                                {errors.photo}
-                            </p>
-                        )}
-                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        {/* Product Image */}
+                        <div className="space-y-2">
+                            <label className={`text-sm lg:text-base block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                                Product Image URL
+                            </label>
+                            <input
+                                type="url"
+                                name="photo"
+                                placeholder="https://example.com/product-image.jpg"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                className={`w-full px-4 py-3 rounded ${theme
+                                    ? "bg-white/20 border text-gray-800"
+                                    : "bg-[#2a2a2a] border text-gray-200"
+                                    } ${touched.photo && errors.photo
+                                        ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                                        : theme
+                                            ? "border-[#7D8D86]/30 focus:border-[#7D8D86]"
+                                            : "border-[#BCA88D]/30 focus:border-[#BCA88D]"
+                                    } focus:outline-none transition-all duration-300 focus:ring-2 ${touched.photo && errors.photo ? "" : theme ? "focus:ring-[#7D8D86]/20" : "focus:ring-[#BCA88D]/20"
+                                    }`}
+                            />
+                            {touched.photo && errors.photo && (
+                                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                    {errors.photo}
+                                </p>
+                            )}
+                        </div>
 
-                    {/* Product Name */}
-                    <div className="space-y-2">
-                        <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
-                            Product Name
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Enter product name"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            className={`w-full px-4 py-3 rounded ${theme
-                                ? "bg-white border text-gray-800"
-                                : "bg-[#2a2a2a] border text-gray-200"
-                                } ${touched.name && errors.name
-                                    ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                                    : theme
-                                        ? "border-[#7D8D86]/30 focus:border-[#7D8D86]"
-                                        : "border-[#BCA88D]/30 focus:border-[#BCA88D]"
-                                } focus:outline-none transition-all duration-300 focus:ring-2 ${touched.name && errors.name ? "" : theme ? "focus:ring-[#7D8D86]/20" : "focus:ring-[#BCA88D]/20"
-                                }`}
-                        />
-                        {touched.name && errors.name && (
-                            <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                </svg>
-                                {errors.name}
-                            </p>
-                        )}
+                        {/* Product Name */}
+                        <div className="space-y-2">
+                            <label className={`text-sm lg:text-base block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                                Product Name
+                            </label>
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Enter product name"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                className={`w-full px-4 py-3 rounded ${theme
+                                    ? "bg-white/20 border text-gray-800"
+                                    : "bg-[#2a2a2a] border text-gray-200"
+                                    } ${touched.name && errors.name
+                                        ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                                        : theme
+                                            ? "border-[#7D8D86]/30 focus:border-[#7D8D86]"
+                                            : "border-[#BCA88D]/30 focus:border-[#BCA88D]"
+                                    } focus:outline-none transition-all duration-300 focus:ring-2 ${touched.name && errors.name ? "" : theme ? "focus:ring-[#7D8D86]/20" : "focus:ring-[#BCA88D]/20"
+                                    }`}
+                            />
+                            {touched.name && errors.name && (
+                                <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                    {errors.name}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
                     {/* Main and Min Quantity */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                            <label className={`text-sm lg:text-base block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
                                 Main Quantity
                             </label>
                             <input
@@ -398,7 +400,7 @@ const AddProduct = () => {
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 className={`w-full px-4 py-3 rounded ${theme
-                                    ? "bg-white border text-gray-800"
+                                    ? "bg-white/20 border text-gray-800"
                                     : "bg-[#2a2a2a] border text-gray-200"
                                     } ${touched.main_quantity && errors.main_quantity
                                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -419,7 +421,7 @@ const AddProduct = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                            <label className={`text-sm lg:text-base block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
                                 Minimum Selling Quantity
                             </label>
                             <input
@@ -429,7 +431,7 @@ const AddProduct = () => {
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 className={`w-full px-4 py-3 rounded ${theme
-                                    ? "bg-white border text-gray-800"
+                                    ? "bg-white/20 border text-gray-800"
                                     : "bg-[#2a2a2a] border text-gray-200"
                                     } ${touched.minimum_selling_quantity && errors.minimum_selling_quantity
                                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -453,7 +455,7 @@ const AddProduct = () => {
                     {/* Brand and Category */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                            <label className={`lg:text-base text-sm block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
                                 Brand Name
                             </label>
                             <input
@@ -463,7 +465,7 @@ const AddProduct = () => {
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 className={`w-full px-4 py-3 rounded ${theme
-                                    ? "bg-white border text-gray-800"
+                                    ? "bg-white/20 border text-gray-800"
                                     : "bg-[#2a2a2a] border text-gray-200"
                                     } ${touched.brand && errors.brand
                                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -484,7 +486,7 @@ const AddProduct = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                            <label className={`text-sm lg:text-base block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
                                 Category
                             </label>
                             <div className="relative">
@@ -493,7 +495,7 @@ const AddProduct = () => {
                                     onBlur={handleBlur}
                                     onChange={handleChange}
                                     className={`w-full px-4 py-3 rounded appearance-none cursor-pointer ${theme
-                                        ? "bg-white border text-gray-800"
+                                        ? "bg-white/20 border text-gray-800"
                                         : "bg-[#2a2a2a] border text-gray-200"
                                         } ${touched.category_slug && errors.category_slug
                                             ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -531,42 +533,10 @@ const AddProduct = () => {
                         </div>
                     </div>
 
-                    {/* Description */}
-                    <div className="space-y-2">
-                        <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
-                            Short Description
-                        </label>
-                        <textarea
-                            name="description"
-                            placeholder="Describe your product in detail..."
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            className={`w-full px-4 py-3 rounded ${theme
-                                ? "bg-white border text-gray-800"
-                                : "bg-[#2a2a2a] border text-gray-200"
-                                } ${touched.description && errors.description
-                                    ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                                    : theme
-                                        ? "border-[#7D8D86]/30 focus:border-[#7D8D86]"
-                                        : "border-[#BCA88D]/30 focus:border-[#BCA88D]"
-                                } focus:outline-none transition-all duration-300 focus:ring-2 ${touched.description && errors.description ? "" : theme ? "focus:ring-[#7D8D86]/20" : "focus:ring-[#BCA88D]/20"
-                                } resize-none`}
-                            rows="4"
-                        ></textarea>
-                        {touched.description && errors.description && (
-                            <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                                </svg>
-                                {errors.description}
-                            </p>
-                        )}
-                    </div>
-
                     {/* Price and Rating */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                            <label className={`text-sm lg:text-base block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
                                 Price (per unit)
                             </label>
                             <input
@@ -577,7 +547,7 @@ const AddProduct = () => {
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 className={`w-full px-4 py-3 rounded ${theme
-                                    ? "bg-white border text-gray-800"
+                                    ? "bg-white/20 border text-gray-800"
                                     : "bg-[#2a2a2a] border text-gray-200"
                                     } ${touched.price && errors.price
                                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -598,7 +568,7 @@ const AddProduct = () => {
                         </div>
 
                         <div className="space-y-2">
-                            <label className={`block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                            <label className={`text-sm lg:text-base block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
                                 Rating (1-5)
                             </label>
                             <input
@@ -611,7 +581,7 @@ const AddProduct = () => {
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 className={`w-full px-4 py-3 rounded ${theme
-                                    ? "bg-white border text-gray-800"
+                                    ? "bg-white/20 border text-gray-800"
                                     : "bg-[#2a2a2a] border text-gray-200"
                                     } ${touched.rating && errors.rating
                                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
@@ -632,10 +602,42 @@ const AddProduct = () => {
                         </div>
                     </div>
 
+                    {/* Description */}
+                    <div className="space-y-2">
+                        <label className={`text-sm lg:text-base block font-semibold ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
+                            Short Description
+                        </label>
+                        <textarea
+                            name="description"
+                            placeholder="Describe your product in detail..."
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            className={`w-full px-4 py-3 rounded ${theme
+                                ? "bg-white/20 border text-gray-800"
+                                : "bg-[#2a2a2a] border text-gray-200"
+                                } ${touched.description && errors.description
+                                    ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                                    : theme
+                                        ? "border-[#7D8D86]/30 focus:border-[#7D8D86]"
+                                        : "border-[#BCA88D]/30 focus:border-[#BCA88D]"
+                                } focus:outline-none transition-all duration-300 focus:ring-2 ${touched.description && errors.description ? "" : theme ? "focus:ring-[#7D8D86]/20" : "focus:ring-[#BCA88D]/20"
+                                } resize-none`}
+                            rows="4"
+                        ></textarea>
+                        {touched.description && errors.description && (
+                            <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                </svg>
+                                {errors.description}
+                            </p>
+                        )}
+                    </div>
+
                     {/* Submit Button */}
-                    <div className="pt-4">
+                    <div className="flex justify-center">
                         <CommonButton type="submit" disabled={isLoading}>
-                            <span className="relative z-10 flex items-center justify-center gap-2">
+                            <div className="relative z-10 flex items-center justify-center gap-2">
                                 {isLoading ? (
                                     <>
                                         <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -657,13 +659,13 @@ const AddProduct = () => {
                                         </svg>
                                     </>
                                 )}
-                            </span>
+                            </div>
                         </CommonButton>
                     </div>
                 </form>
 
                 {/* Info Section */}
-                <div className={`mt-10 p-6 rounded-xl ${theme ? "bg-white/50" : "bg-[#2a2a2a]/50"} border ${theme ? "border-[#7D8D86]/20" : "border-[#BCA88D]/20"}`}>
+                <div className={`mt-5 p-6 rounded-xl ${theme ? "bg-white/50" : "bg-[#2a2a2a]/50"} border ${theme ? "border-[#7D8D86]/20" : "border-[#BCA88D]/20"}`}>
                     <h3 className={`font-bold text-lg mb-3 ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>
                         📦 Product Listing Tips
                     </h3>
