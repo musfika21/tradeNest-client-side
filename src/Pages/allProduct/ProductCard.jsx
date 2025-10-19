@@ -1,50 +1,80 @@
 import React from 'react';
-import { CgNotes } from "react-icons/cg";
+import { FaArrowRight, FaStar } from "react-icons/fa";
 import { Link } from 'react-router';
 import useAuth from '../../CustomHooks/UseAuth';
-import CommonButton from '../../Shared/CommonButton';
 
 const ProductCard = ({ product }) => {
-
     const { theme } = useAuth();
-    const { _id, photo, name, description } = product;
+    const { _id, photo, name, category, brand, price, rating } = product;
 
     return (
-        <div className={`rounded shadow-md hover:shadow-xl transition duration-300 p-4 ${theme ? "bg-white" : "bg-[#343434]"}`}>
-            {/* Image */}
-            <div className='flex justify-center'>
-                <img
-                    src={photo}
-                    alt={name}
-                    className="w-15 h-15 sm:w-16 sm:h-16 object-cover mb-4 mx-auto"
-                />
-            </div>
-
-            {/* Product Info */}
-            <div className="space-y-2">
-                <h2 className={`text-xs  mt-2 font-semibold text-center ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>{name}</h2>
-                <p className={`text-[10px] ${theme ? "text-gray-600" : "text-gray-300"}`}>
-                    {description.length > 23
-                        ? description.slice(0, 23) + "..."
-                        : description}
-                </p>
-
-            </div>
-
-            {/* Button */}
-            <div className='flex justify-between'>
-                <Link to={`/product-Details/${_id}`}>
-                    <p className={`text-xs mt-3 underline`}>See More</p>
-                </Link>
-                {/* <Link to={`/update-Product/${product._id}`}>
-                    <div className='mt-4 flex justify-end '>
-                        <CommonButton>
-                            Update
-                        </CommonButton>
+        <Link to={`/product-Details/${_id}`}>
+            <div className={`group relative rounded-xl overflow-hidden ${theme ? "bg-white border border-gray-200" : "bg-gray-800 border border-gray-700"} hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}>
+                {/* Image Container - Smaller */}
+                <div className="relative overflow-hidden h-32 sm:h-36 bg-gray-100">
+                    <img
+                        src={photo}
+                        alt={name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    
+                    {/* Overlay on Hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-2">
+                        <div className="bg-white text-gray-900 px-3 py-1.5 rounded-lg font-semibold text-xs flex items-center gap-1.5">
+                            View
+                            <FaArrowRight className="text-[10px] group-hover:translate-x-1 transition-transform" />
+                        </div>
                     </div>
-                </Link> */}
+
+                    {/* Category Badge - Smaller */}
+                    {category && (
+                        <div className="absolute top-2 left-2">
+                            <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full ${theme ? 'bg-[#3E3F29] text-white' : 'bg-[#BCA88D] text-gray-900'}`}>
+                                {category}
+                            </span>
+                        </div>
+                    )}
+                </div>
+
+                {/* Content - Compact */}
+                <div className="p-3 space-y-2">
+                    {/* Product Name - Smaller */}
+                    <h3 className={`font-bold text-xs line-clamp-2 min-h-[32px] leading-tight ${theme ? 'text-[#3E3F29]' : 'text-white'}`}>
+                        {name}
+                    </h3>
+
+                    {/* Brand - Smaller */}
+                    {brand && (
+                        <p className={`text-[10px] ${theme ? 'text-gray-600' : 'text-gray-400'}`}>
+                            <span className="font-semibold">{brand}</span>
+                        </p>
+                    )}
+
+                    {/* Rating & Price Row - Compact */}
+                    <div className="flex items-center justify-between pt-1.5 border-t ${theme ? 'border-gray-200' : 'border-gray-700'}">
+                        {/* Rating */}
+                        {rating && (
+                            <div className="flex items-center gap-1">
+                                <FaStar className="text-yellow-400 text-[10px]" />
+                                <span className={`text-[10px] font-semibold ${theme ? 'text-gray-700' : 'text-gray-300'}`}>
+                                    {rating}
+                                </span>
+                            </div>
+                        )}
+
+                        {/* Price */}
+                        {price && (
+                            <p className={`text-sm font-bold ${theme ? 'text-[#3E3F29]' : 'text-[#BCA88D]'}`}>
+                                ${price}
+                            </p>
+                        )}
+                    </div>
+                </div>
+
+                {/* Hover Border Effect */}
+                <div className={`absolute inset-0 rounded-xl border-2 ${theme ? 'border-[#3E3F29]' : 'border-[#BCA88D]'} opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`}></div>
             </div>
-        </div>
+        </Link>
     );
 };
 

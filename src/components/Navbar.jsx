@@ -66,33 +66,44 @@ const Navbar = () => {
       </li>
 
       {/* dropdown categories */}
-      <li ref={dropdownRef} className="relative text-lg flex items-center space-x-2 cursor-pointer">
+      <li ref={dropdownRef} className="relative text-lg flex items-center space-x-2">
         {/* Trigger */}
         <div
           onClick={() => setShowCategories((prev) => !prev)}
-          className={`flex items-center transition-colors duration-200
+          className={`flex items-center transition-colors duration-200 cursor-pointer
         hover:${theme ? "text-[#3E3F29]" : "text-[#7D8D86]"}
         ${showCategories ? (theme ? "text-[#3E3F29]" : "text-[#7D8D86]") : ""}
       `}
         >
           <BiCategory className="" />
-          <span className="text-[15px] font-bold">Categories</span>
+          <span className="ml-1 text-[15px] font-bold">Categories</span>
           <IoMdArrowDropdown
-            className={`ml-1 transform transition-transform duration-200 ${showCategories ? "rotate-180" : ""
+            className={`ml-1 transform transition-transform duration-300 ${showCategories ? "rotate-180" : ""
               }`}
           />
         </div>
 
         {/* Dropdown */}
         {showCategories && (
-          <ul className={`absolute top-10 left-0 mt-2 ${theme ? 'bg-[#F1F0E4] text-black' : 'bg-[#1F1F1F] text-white'} border shadow-lg rounded-md w-60 z-50`}>
-            {categories.map((cat) => (
+          <ul className={`absolute top-full left-0 mt-3 ${theme ? 'bg-white/90 text-black border-gray-200' : 'bg-gray-900/95 text-white border-gray-700'} 
+            border backdrop-blur-xl shadow-2xl rounded-xl w-72 z-50 overflow-hidden
+            animate-in fade-in slide-in-from-top-2 duration-200`}
+          >
+            {categories.map((cat, index) => (
               <li
                 key={cat.slug}
                 onClick={() => handleCategoryClick(cat.slug)}
-                className={`px-4 py-2 ${theme? "hover:bg-[#BCA88D]" : "hover:bg-[#353935]"} cursor-pointer`}
+                className={`px-5 py-3.5 transition-all duration-200 cursor-pointer
+                  ${theme
+                    ? "hover:bg-[#BCA88D]/40 hover:pl-7"
+                    : "hover:bg-[#353935] hover:pl-7"
+                  }
+                  ${index !== categories.length - 1 ? (theme ? 'border-b border-gray-200/50' : 'border-b border-gray-700/50') : ''}
+                  flex items-center gap-2 group
+                `}
               >
-                {cat.name}
+                <span className="w-1.5 h-1.5 rounded-full bg-current opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                <span className="text-sm font-medium">{cat.name}</span>
               </li>
             ))}
           </ul>
@@ -173,8 +184,8 @@ const Navbar = () => {
   }
 
   return (
-    <div className={`w-full ${theme ? 'bg-[#BCA88D] text-black' : 'bg-[#202124] text-white'} fixed left-0 right-0 shadow-md font z-1000`}>
-      <nav className="max-w-11/12 mx-auto flex justify-between items-center py-3 z-20">
+    <div className={`w-full fixed left-0 right-0 top-0 z-50 ${theme ? 'bg-[#BCA88D]/80 text-black' : 'bg-[#202124]/80 text-white'} backdrop-blur-md border-b ${theme ? 'border-gray-300/20' : 'border-gray-700/20'} shadow-lg`}>
+      <nav className="max-w-11/12 mx-auto flex justify-between items-center py-3 px-4">
 
         {/* LOGO */}
         <div className="flex items-center gap-4">
@@ -182,16 +193,16 @@ const Navbar = () => {
           {/* RESPONSIVE NAVBAR LINKS BY MENU ICON */}
           <div className="flex gap-2" onClick={() => setOpen(!open)}>
             {open ? (
-              <RiMenuUnfold2Line className={`lg:hidden h-5 w-5 md:w-7 md:h-7 ${theme ? 'text-[#3E3F29]' : 'text-[#7D8D86]'}`} />
+              <RiMenuUnfold2Line className={`lg:hidden h-5 w-5 md:w-7 md:h-7 ${theme ? 'text-[#3E3F29]' : 'text-[#7D8D86]'} cursor-pointer`} />
             ) : (
-              <RiMenuFold2Line className={`lg:hidden h-5 w-5 md:w-7 md:h-7 ${theme ? 'text-[#3E3F29]' : 'text-[#7D8D86]'}`} />
+              <RiMenuFold2Line className={`lg:hidden h-5 w-5 md:w-7 md:h-7 ${theme ? 'text-[#3E3F29]' : 'text-[#7D8D86]'} cursor-pointer`} />
             )}
 
             <ul
               className={`lg:hidden absolute space-y-3 left-1/2 transform -translate-x-1/2
                         duration-300 ease-in-out transition-all font-bold
-                      ${theme ? 'bg-[#F1F0E4] text-black' : 'bg-gray-950 text-white'} rounded-b-md shadow-lg w-full p-6
-                        backdrop-blur-lg z-50
+                      ${theme ? 'bg-white/95 text-black' : 'bg-gray-950/95 text-white'} rounded-b-xl shadow-2xl w-full p-6
+                        backdrop-blur-xl z-50 border-t-0 ${theme ? 'border-gray-300/20' : 'border-gray-700/20'}
                         ${open ? "top-16 md:top-21 opacity-100 scale-100" : "top-10 opacity-0 scale-90 pointer-events-none"}
                       `}
             >
@@ -211,43 +222,45 @@ const Navbar = () => {
         {/* LOGIN/REGISTER */}
         <div className="flex items-center">
           <button
-            className="block text-xl mr-1 md:mr-3 cursor-pointer transition delay-75"
+            className="block text-xl mr-1 md:mr-3 cursor-pointer transition-all duration-200 hover:scale-110"
             onClick={toggleTheme}
           >
             {theme ? <FaMoon /> : <ImSun />}
           </button>
           {
             user ? <>
-              <div className="mr-3 cursor-pointer" onClick={() => setSideBar(!sidebar)}>
+              <div className="mr-3 cursor-pointer relative" onClick={() => setSideBar(!sidebar)}>
                 {
                   user?.photoURL ? (
                     <img
-                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-full border-2 lg:border-3 ${theme ? 'text-[#3E3F29]' : 'border-[#7D8D86]'}`}
+                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-full border-2 lg:border-3 ${theme ? 'border-[#3E3F29]' : 'border-[#7D8D86]'} transition-all duration-200 hover:scale-105`}
                       src={user?.photoURL}
                       alt="profile picture"
                     />
                   ) : (
                     <IoPersonCircleOutline
-                      className="w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13"
+                      className="w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13 transition-all duration-200 hover:scale-105"
                     />
                   )
                 }
                 <div
-                  className={`absolute space-y-3 -right-15 transform -translate-x-1/2
+                  className={`absolute space-y-3 right-0 transform
                         duration-300 ease-in-out transition-all font-semibold
-                      ${theme ? 'bg-[#F1F0E4] text-black' : 'bg-gray-950 text-white'} rounded-b-lg shadow-lg w-30 p-4
-                        backdrop-blur-lg z-50
-                        ${sidebar ? "top-16 md:top-19 opacity-100 scale-100" : "top-10 opacity-0 scale-90 pointer-events-none"}
+                      ${theme ? 'bg-white/95 text-black' : 'bg-gray-950/95 text-white'} rounded-xl shadow-2xl w-48 p-4
+                        backdrop-blur-xl z-50 border ${theme ? 'border-gray-200/50' : 'border-gray-700/50'}
+                        ${sidebar ? "top-full mt-3 opacity-100 scale-100" : "top-10 opacity-0 scale-90 pointer-events-none"}
                       `}
                 >
-                  <p className="text-center text-sm">{user?.displayName}</p>
-                  <CommonButton className="flex items-center gap-2" onClick={handleSignOut}><CiLogout />Logout</CommonButton>
+                  <p className="text-center text-sm border-b pb-2 ${theme ? 'border-gray-200' : 'border-gray-700'}">{user?.displayName}</p>
+                  <CommonButton className="flex items-center gap-2 w-full justify-center" onClick={handleSignOut}><CiLogout />Logout</CommonButton>
                 </div>
               </div>
             </> : <>
-              <CommonButton className="flex items-center gap-2 lg:text-md">
-                <CiLogin /><Link to="/login-user" className="">Login</Link>
-              </CommonButton>
+              <Link to="/login-user" className="">
+                <CommonButton className="flex items-center gap-2 lg:text-md">
+                  <CiLogin />Login
+                </CommonButton>
+              </Link>
             </>
 
           }
