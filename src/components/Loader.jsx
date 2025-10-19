@@ -3,8 +3,7 @@ import { Triangle } from 'react-loader-spinner';
 import useAuth from '../CustomHooks/UseAuth';
 
 const Loader = () => {
-
-    const {theme} = useAuth();
+    const { theme } = useAuth();
 
     return (
         <div className='flex justify-center items-center min-h-screen'>
@@ -12,8 +11,9 @@ const Loader = () => {
                 visible={true}
                 height="80"
                 width="80"
-                color={`${theme ? "" : ""}`}
+                color={theme ? '#3E3F29' : '#7D8D86'}
                 ariaLabel="triangle-loading"
+                wrapperStyle={{}}
             />
         </div>
     );

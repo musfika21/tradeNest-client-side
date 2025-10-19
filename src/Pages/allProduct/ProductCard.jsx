@@ -2,14 +2,15 @@ import React from 'react';
 import { FaArrowRight, FaStar } from "react-icons/fa";
 import { Link } from 'react-router';
 import useAuth from '../../CustomHooks/UseAuth';
+import CommonButton from '../../Shared/CommonButton';
 
 const ProductCard = ({ product }) => {
     const { theme } = useAuth();
-    const { _id, photo, name, category, brand, price, rating } = product;
+    const { _id, photo, name, category, brand, price, rating, description } = product;
 
     return (
         <Link to={`/product-Details/${_id}`}>
-            <div className={`group relative rounded-xl overflow-hidden ${theme ? "bg-white border border-gray-200" : "bg-gray-800 border border-gray-700"} hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}>
+            <div className={`group relative rounded-xl overflow-hidden ${theme ? "bg-white border border-gray-200" : "bg-[#343434] border-gray-700"} hover:shadow-xl transition-all duration-300 hover:-translate-y-1`}>
                 {/* Image Container - Smaller */}
                 <div className="relative overflow-hidden h-32 sm:h-36 bg-gray-100">
                     <img
@@ -19,11 +20,11 @@ const ProductCard = ({ product }) => {
                     />
                     
                     {/* Overlay on Hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-2">
-                        <div className="bg-white text-gray-900 px-3 py-1.5 rounded-lg font-semibold text-xs flex items-center gap-1.5">
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-2">
+                        <CommonButton className="flex items-center gap-1.5">
                             View
                             <FaArrowRight className="text-[10px] group-hover:translate-x-1 transition-transform" />
-                        </div>
+                        </CommonButton>
                     </div>
 
                     {/* Category Badge - Smaller */}
@@ -47,6 +48,7 @@ const ProductCard = ({ product }) => {
                     {brand && (
                         <p className={`text-[10px] ${theme ? 'text-gray-600' : 'text-gray-400'}`}>
                             <span className="font-semibold">{brand}</span>
+                            <p>{description}</p>
                         </p>
                     )}
 
