@@ -28,7 +28,6 @@ const AllProducts = () => {
                 setLoading(false);
             })
             .catch((err) => {
-                console.error("❌ Error fetching products:", err);
                 setLoadingState(false);
                 setLoading(false);
             });
@@ -64,7 +63,7 @@ const AllProducts = () => {
     }
 
     return (
-        <div className={`min-h-screen ${theme ? 'bg-white' : 'bg-gray-900'}`}>
+        <div className={`min-h-screen `}>
             <div className="px-4 py-8 max-w-7xl mx-auto">
                 {/* Top Bar */}
                 <div className="flex flex-wrap gap-3 justify-between items-center mb-6">

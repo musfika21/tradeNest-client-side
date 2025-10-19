@@ -38,7 +38,6 @@ const Details = () => {
                 if (data.data.insertedId) {
                     axios.patch(`${import.meta.env.VITE_SERVER_API}/products/${_id}`, { buyQuantity: -buyQuantity })
                         .then((data) => {
-                            console.log(data.data)
                         })
                     Swal.fire({
                         position: "top-end",
@@ -51,7 +50,6 @@ const Details = () => {
                 }
             })
             .catch((error) => {
-                console.error("Error:", error);
                 Swal.fire({
                     position: "top-end",
                     icon: "error",

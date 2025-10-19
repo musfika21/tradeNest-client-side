@@ -125,7 +125,7 @@ const Register = () => {
         >
             {/* Registration Form */}
             <div
-                className={`p-6 sm:p-8 md:p-10 rounded-2xl transition-all duration-300 w-11/12 mx-auto lg:w-9/12 xl:8/12 ${theme ? 'bg-white/60' : 'bg-[#2a2a2a]/70'
+                className={`p-6 sm:p-8 md:p-10 rounded-2xl transition-all duration-300 w-11/12 mx-auto md:w-3/4 lg:w-9/12 xl:w-1/2 ${theme ? 'bg-white/60' : 'bg-[#2a2a2a]/70'
                     } backdrop-blur-md`}
             >
                 {/* Header */}

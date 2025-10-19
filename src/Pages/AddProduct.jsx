@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import CommonButton from "../Shared/CommonButton";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import Swal from "sweetalert2";
 import useAuth from "../CustomHooks/UseAuth";
 import toast from "react-hot-toast";
 
@@ -36,42 +35,6 @@ const categories = [
     {
         name: "Office Supplies & Stationery",
         slug: 'office_supplies_&_stationery',
-    },
-    {
-        name: "Sports & Outdoor Equipment",
-        slug: 'sports_&_outdoor_equipment',
-    },
-    {
-        name: "Toys, Games & Hobbies",
-        slug: 'toys_&_games_&_hobbies',
-    },
-    {
-        name: "Food & Beverages",
-        slug: 'food_&_beverages',
-    },
-    {
-        name: "Construction Materials & Hardware",
-        slug: 'construction_materials_&_hardware',
-    },
-    {
-        name: "Agriculture & Farming Supplies",
-        slug: 'agriculture_&_farming_supplies',
-    },
-    {
-        name: "Pet Supplies & Accessories",
-        slug: 'pet_supplies_&_accessories',
-    },
-    {
-        name: "Medical Supplies & Equipment",
-        slug: 'medical_supplies_&_equipment',
-    },
-    {
-        name: "Art, Crafts & DIY Materials",
-        slug: 'art_&_crafts_&_diy_materials',
-    },
-    {
-        name: "Travel & Luggage",
-        slug: 'travel_&_luggage',
     }
 
 ];
@@ -238,14 +201,9 @@ const AddProduct = () => {
             email: user?.email || "unknown@domain.com",
             category: category
         };
-
-        console.log("Sending to server:", productWithEmail);
-        console.log("API URL:", import.meta.env.VITE_SERVER_API);
-
         axios
             .post(`${import.meta.env.VITE_SERVER_API}/products`, productWithEmail)
             .then((response) => {
-                console.log("Success response:", response);
                 setIsLoading(false);
 
                 if (response.data.insertedId) {
@@ -288,9 +246,6 @@ const AddProduct = () => {
             })
             .catch((error) => {
                 setIsLoading(false);
-                console.error("Full error:", error);
-                console.error("Error response:", error.response?.data);
-
                 const errorMessage = error.response?.data?.message || "Failed to add Product. Please try again.";
 
                 toast.error(errorMessage, {

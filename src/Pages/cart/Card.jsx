@@ -1,81 +1,192 @@
 import axios from 'axios';
-import React from 'react';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router';
+import { FaStar, FaEye, FaTrash, FaShoppingBag } from 'react-icons/fa';
+import useAuth from '../../CustomHooks/UseAuth';
 
-const Card = ({ product }) => {
-    const { _id, name, photo, purchasedProduct, purchaseAmount, brand, price, category, description, rating } = product;
+const Card = ({ product, onDelete }) => {
+    const { theme } = useAuth();
+    const { _id, name, photo, purchasedProduct, purchaseAmount, brand, price, category, description, rating, main_quantity } = product;
 
     const handleCancel = async () => {
+        // Confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        });
+
+        if (!result.isConfirmed) {
+            return;
+        }
+
         try {
             await axios.delete(`${import.meta.env.VITE_SERVER_API}/purchase/${_id}`);
 
             const patchRes = await axios.patch(`${import.meta.env.VITE_SERVER_API}/products/${purchasedProduct}`, {
                 buyQuantity: Number(purchaseAmount),
             });
-
-            console.log('PATCH result:', patchRes.data);
-
             Swal.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: 'Product canceled successfully',
+                title: 'Product deleted successfully',
                 showConfirmButton: false,
                 timer: 1500,
             });
+
+            // Remove from UI
+            if (onDelete) {
+                onDelete(_id);
+            }
         } catch (error) {
-            console.error('Error:', error);
             Swal.fire({
                 position: 'top-end',
                 icon: 'error',
-                title: 'Failed to cancel product',
+                title: 'Failed to delete product',
                 showConfirmButton: false,
                 timer: 1500,
             });
         }
     };
 
-
     return (
-        <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 max-w-sm mx-auto overflow-hidden border border-gray-200 ">
-            {/* Image */}
-            <div className="w-full h-56 flex items-center justify-center overflow-hidden">
-                <img
-                    src={photo}
-                    alt={name}
-                    className="h-full w-full object-contain transition-transform duration-300 hover:scale-105"
-                    onError={(e) => (e.target.src = 'https://via.placeholder.com/300')}
-                />
+        <div className={`group relative rounded-2xl overflow-hidden transition-all duration-500 ${
+            theme 
+                ? 'bg-white shadow-lg hover:shadow-2xl' 
+                : 'bg-[#343434] shadow-xl hover:shadow-2xl'
+        }`}>
+            {/* Image Section with Gradient Overlay */}
+            <div className="relative h-64 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                {photo ? (
+                    <img
+                        src={photo}
+                        alt={name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        onError={(e) => {
+                            e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+                        }}
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400">
+                        <FaShoppingBag className="text-6xl opacity-30" />
+                    </div>
+                )}
+
+                {/* Floating Badges */}
+                <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
+                    {category && (
+                        <span className={`px-4 py-1.5 text-xs font-bold rounded-full backdrop-blur-md shadow-xl ${
+                            theme 
+                                ? 'bg-white/90 text-gray-900' 
+                                : 'bg-black/50 text-white border border-white/20'
+                        }`}>
+                            {category}
+                        </span>
+                    )}
+                </div>
+
+                {/* Stock Badge */}
+                {main_quantity !== undefined && (
+                    <div className="absolute top-4 right-4 z-20">
+                        <span className={`px-4 py-1.5 text-xs font-bold rounded-full backdrop-blur-md shadow-xl border ${
+                            main_quantity > 10
+                                ? 'bg-emerald-500/90 text-white border-emerald-400/50'
+                                : main_quantity > 0
+                                    ? 'bg-amber-500/90 text-white border-amber-400/50'
+                                    : 'bg-red-500/90 text-white border-red-400/50'
+                        }`}>
+                            {main_quantity > 0 ? `${main_quantity} in stock` : 'Out of stock'}
+                        </span>
+                    </div>
+                )}
+
+                {/* Quick Action Buttons - Visible on Hover */}
+                <div className="absolute bottom-4 right-4 flex gap-2 z-20 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                    <Link to={`/product-Details/${purchasedProduct || _id}`}>
+                        <button className="p-3 bg-white/95 hover:bg-white cursor-pointer rounded-full shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110">
+                            <FaEye className="text-gray-900 text-sm" />
+                        </button>
+                    </Link>
+                    <button 
+                        onClick={() => handleCancel(_id)}
+                        className="p-3 bg-red-500/95 hover:bg-red-600 rounded-full cursor-pointer shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
+                    >
+                        <FaTrash className="text-white text-sm" />
+                    </button>
+                </div>
             </div>
 
-            {/* Content */}
-            <div className="p-5">
+            {/* Content Section */}
+            <div className="p-6">
+                {/* Brand */}
+                {brand && (
+                    <p className={`text-xs font-bold uppercase tracking-widest mb-2 ${
+                        theme ? 'text-gray-500' : 'text-gray-400'
+                    }`}>
+                        {brand}
+                    </p>
+                )}
+
                 {/* Product Name */}
-                <h2 className="text-xl font-bold text-gray-800  truncate">{name}</h2>
+                <h3 className={`text-lg font-bold mb-2 line-clamp-2 min-h-[56px] leading-tight ${
+                    theme ? 'text-gray-900' : 'text-white'
+                }`}>
+                    {name || 'Unnamed Product'}
+                </h3>
 
                 {/* Description */}
-                <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                <p className={`text-sm mb-4 line-clamp-2 leading-relaxed ${
+                    theme ? 'text-gray-600' : 'text-gray-400'
+                }`}>
                     {description || 'No description available.'}
                 </p>
 
-                {/* Details */}
-                <div className="mt-3 text-sm text-gray-600 space-y-1">
-                    <p><span className="font-medium text-gray-800 ">Brand:</span> {brand || 'Unknown'}</p>
-                    <p><span className="font-medium text-gray-800 ">Category:</span> {category || 'N/A'}</p>
-                    <p><span className="font-medium text-gray-800 ">Purchased Quantity:</span> {purchaseAmount || 0}</p>
-                </div>
+                {/* Price & Rating Section */}
+                <div className="flex items-center justify-between mb-5">
+                    {/* Price with Currency Symbol */}
+                    <div>
+                        <p className={`text-xs font-medium mb-1 ${
+                            theme ? 'text-gray-500' : 'text-gray-400'
+                        }`}>
+                            Price
+                        </p>
+                        <div className="flex items-baseline gap-1">
+                            <span className={`text-3xl font-bold ${
+                                theme ? 'text-gray-900' : 'text-white'
+                            }`}>
+                                ${price?.toFixed(0) || '0'}
+                            </span>
+                            <span className={`text-lg font-semibold ${
+                                theme ? 'text-gray-600' : 'text-gray-400'
+                            }`}>
+                                .{(price % 1).toFixed(2).slice(2)}
+                            </span>
+                        </div>
+                    </div>
 
-                {/* Price and Action */}
-                <div className="mt-4 flex items-center justify-between">
-                    <span className="text-lg font-bold text-green-600">${price}</span>
-                </div>
-
-                {/* Delete Button */}
-                <div className="mt-5">
-                    <button
-                        onClick={handleCancel}
-                        className="w-full py-2 px-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg transition duration-200">
-                        Delete
-                    </button>
+                    {/* Rating */}
+                    {rating && (
+                        <div className="flex flex-col items-end">
+                            <p className={`text-xs font-medium mb-1 ${
+                                theme ? 'text-gray-500' : 'text-gray-400'
+                            }`}>
+                                Rating
+                            </p>
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400">
+                                <FaStar className="text-white text-sm drop-shadow" />
+                                <span className="text-sm font-bold text-white">
+                                    {rating.toFixed(1)}
+                                </span>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

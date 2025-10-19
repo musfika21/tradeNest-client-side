@@ -20,6 +20,7 @@ const categories = [
   { name: "Industrial Machinery & Tools", slug: "industrial_machinery_&_tools" },
   { name: "Health & Beauty", slug: "health_&_beauty" },
   { name: "Automotive Parts & Accessories", slug: "automotive_parts_&_accessories" },
+  { name: "Office Supplies & Stationery", slug: "office_supplies_&_stationery" },
 ];
 
 const Navbar = () => {

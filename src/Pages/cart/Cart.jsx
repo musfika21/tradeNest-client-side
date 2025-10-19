@@ -7,7 +7,6 @@ import CommonButton from '../../Shared/CommonButton';
 
 const Cart = () => {
     const { theme, user, loading } = useAuth();
-    const userEmail = user?.email;
     const [products, setProducts] = useState([]);
     const [error, setError] = useState(null);
 
@@ -19,11 +18,15 @@ const Cart = () => {
                 setProducts(res.data);
             })
             .catch(err => {
-                console.error(err);
                 setError("Failed to fetch purchase data.");
             });
 
     }, [user]);
+
+    const handleDeleteProduct = (productId) => {
+        setProducts(products.filter(product => product._id !== productId));
+    };
+
     return (
         <div className="container mx-auto px-4 pt-15 min-h-[calc(100vh-325px)] pb-5">
             <h2 className={`text-3xl font-bold text-center mb-8 ${theme ? "text-[#3E3F29]" : "text-[#BCA88D]"}`}>My Cart</h2>
@@ -50,12 +53,13 @@ const Cart = () => {
             )}
 
             {!loading && products.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {products.map((product) => {
                         return (
                             <Card
                                 key={product._id}
                                 product={product}
+                                onDelete={handleDeleteProduct}
                             />
                         )
                     }

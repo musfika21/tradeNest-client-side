@@ -35,7 +35,7 @@ const Works = () => {
 
     return (
         <section className={`py-20'}`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-5">
                 {/* Section Header */}
                 <div className="text-center mb-16 space-y-4">
                     <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${theme ? 'bg-[#BCA88D]/20 text-[#3E3F29]' : 'bg-[#7D8D86]/20 text-[#7D8D86]'} backdrop-blur-sm border ${theme ? 'border-[#BCA88D]/30' : 'border-[#7D8D86]/30'} mb-4`}>
