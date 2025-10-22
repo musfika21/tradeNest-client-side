@@ -3,7 +3,7 @@ import logo from '../assets/logo.png'; // Replace with your actual logo path
 import { MdEmail } from 'react-icons/md';
 import CustomizedButton from '../Shared/CustomizedButton';
 import { Link } from 'react-router';
-import { Bounce, toast } from 'react-toastify';
+import toast from 'react-hot-toast';
 
 
 const ResetPassword = () => {
@@ -20,7 +20,6 @@ const ResetPassword = () => {
             draggable: true,
             progress: undefined,
             theme: "light",
-            transition: Bounce,
         });
     };
 

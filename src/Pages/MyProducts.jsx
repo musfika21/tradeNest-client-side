@@ -6,6 +6,8 @@ import axios from 'axios';
 import CommonButton from '../Shared/CommonButton';
 import Loader from '../components/Loader';
 import { FaEdit, FaTrash, FaEye, FaStar } from 'react-icons/fa';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const MyProducts = () => {
     const { theme, user, loading } = useAuth();
@@ -64,7 +66,7 @@ const MyProducts = () => {
     }
 
     return (
-        <div className={`min-h-screen py-12 px-4 ${theme ? 'bg-gray-50' : 'bg-[#1a1a1a]'}`}>
+        <div className={`min-h-screen py-12 px-4 ${theme ? '' : 'bg-[#1a1a1a]'}`}>
             <div className="container mx-auto max-w-7xl">
                 <div className="flex items-center justify-between mb-10">
                     <h2 className={`text-3xl font-bold ${theme ? 'text-[#3E3F29]' : 'text-white'}`}>
@@ -91,22 +93,25 @@ const MyProducts = () => {
                         </Link>
                     </div>
                 )}
-                
+
                 {!error && products.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {products.map((product) => (
                             <div
                                 key={product._id}
-                                className={`group rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col ${
-                                    theme ? 'bg-white border border-gray-200' : 'bg-[#2a2a2a] border border-gray-700'
-                                }`}
+                                className={`group rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col ${theme ? 'bg-white border border-gray-200' : 'bg-[#2a2a2a] border border-gray-700'
+                                    }`}
                             >
                                 {/* Image Section */}
                                 <div className="relative h-56 overflow-hidden bg-gray-100">
                                     {product.photo ? (
-                                        <img
+                                        <LazyLoadImage
                                             src={product.photo}
                                             alt={product.name}
+                                            effect="blur"
+                                            wrapperProps={{
+                                                style: { transitionDelay: "1s" },
+                                            }}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                         />
                                     ) : (
@@ -118,9 +123,8 @@ const MyProducts = () => {
                                     {/* Category Badge */}
                                     {product.category && (
                                         <div className="absolute top-3 left-3">
-                                            <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-lg ${
-                                                theme ? 'bg-[#3E3F29] text-white' : 'bg-[#BCA88D] text-gray-900'
-                                            }`}>
+                                            <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-lg ${theme ? 'bg-[#3E3F29] text-white' : 'bg-[#BCA88D] text-gray-900'
+                                                }`}>
                                                 {product.category}
                                             </span>
                                         </div>
@@ -129,13 +133,12 @@ const MyProducts = () => {
                                     {/* Stock Badge */}
                                     {product.main_quantity !== undefined && (
                                         <div className="absolute top-3 right-3">
-                                            <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-lg ${
-                                                product.main_quantity > 10
-                                                ? theme ? 'bg-green-500 text-white' : 'bg-green-600 text-white'
-                                                : product.main_quantity > 0
-                                                ? 'bg-yellow-500 text-white'
-                                                : 'bg-red-500 text-white'
-                                            }`}>
+                                            <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-lg ${product.main_quantity > 10
+                                                    ? theme ? 'bg-green-500 text-white' : 'bg-green-600 text-white'
+                                                    : product.main_quantity > 0
+                                                        ? 'bg-yellow-500 text-white'
+                                                        : 'bg-red-500 text-white'
+                                                }`}>
                                                 {product.main_quantity}
                                             </span>
                                         </div>
@@ -146,41 +149,36 @@ const MyProducts = () => {
                                 <div className="p-4 flex-1 flex flex-col">
                                     {/* Brand */}
                                     {product.brand && (
-                                        <p className={`text-xs font-semibold uppercase tracking-wider mb-2 ${
-                                            theme ? 'text-gray-500' : 'text-gray-400'
-                                        }`}>
+                                        <p className={`text-xs font-semibold uppercase tracking-wider mb-2 ${theme ? 'text-gray-500' : 'text-gray-400'
+                                            }`}>
                                             {product.brand}
                                         </p>
                                     )}
 
                                     {/* Product Name */}
-                                    <h3 className={`text-base font-bold mb-2 line-clamp-2 min-h-[48px] ${
-                                        theme ? 'text-[#3E3F29]' : 'text-white'
-                                    }`}>
+                                    <h3 className={`text-base font-bold mb-2 line-clamp-2 min-h-[48px] ${theme ? 'text-[#3E3F29]' : 'text-white'
+                                        }`}>
                                         {product.name || 'Unnamed Product'}
                                     </h3>
 
                                     {/* Description */}
-                                    <p className={`text-sm mb-3 line-clamp-2 ${
-                                        theme ? 'text-gray-600' : 'text-gray-400'
-                                    }`}>
+                                    <p className={`text-sm mb-3 line-clamp-2 ${theme ? 'text-gray-600' : 'text-gray-400'
+                                        }`}>
                                         {product.description || 'No description available.'}
                                     </p>
 
                                     {/* Price & Rating */}
                                     <div className="flex items-center justify-between mb-4 mt-auto">
-                                        <div className={`text-xl font-bold ${
-                                            theme ? 'text-[#3E3F29]' : 'text-[#BCA88D]'
-                                        }`}>
+                                        <div className={`text-xl font-bold ${theme ? 'text-[#3E3F29]' : 'text-[#BCA88D]'
+                                            }`}>
                                             ${product.price?.toFixed(2) || '0.00'}
                                         </div>
 
                                         {product.rating && (
                                             <div className="flex items-center gap-1">
                                                 <FaStar className="text-yellow-400 text-sm" />
-                                                <span className={`text-sm font-semibold ${
-                                                    theme ? 'text-gray-700' : 'text-gray-300'
-                                                }`}>
+                                                <span className={`text-sm font-semibold ${theme ? 'text-gray-700' : 'text-gray-300'
+                                                    }`}>
                                                     {product.rating}
                                                 </span>
                                             </div>
@@ -188,29 +186,26 @@ const MyProducts = () => {
                                     </div>
 
                                     {/* Divider */}
-                                    <div className={`h-px mb-4 ${
-                                        theme ? 'bg-gray-200' : 'bg-gray-700'
-                                    }`}></div>
+                                    <div className={`h-px mb-4 ${theme ? 'bg-gray-200' : 'bg-gray-700'
+                                        }`}></div>
 
                                     {/* Action Buttons */}
                                     <div className="grid grid-cols-3 gap-2">
                                         <Link to={`/product-Details/${product._id}`}>
-                                            <button className={`w-full py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                                                theme 
-                                                ? 'bg-gray-100 hover:bg-gray-200 text-gray-800' 
-                                                : 'bg-[#1f1f1f] hover:bg-[#252525] text-white'
-                                            }`}>
+                                            <button className={`w-full py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer ${theme
+                                                    ? 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                                                    : 'bg-[#1f1f1f] hover:bg-[#252525] text-white'
+                                                }`}>
                                                 <FaEye />
                                                 View
                                             </button>
                                         </Link>
 
                                         <Link to={`/update-Product/${product._id}`}>
-                                            <button className={`w-full py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer ${
-                                                theme 
-                                                ? 'bg-[#3E3F29] hover:bg-[#2e2f1f] text-white' 
-                                                : 'bg-[#BCA88D] hover:bg-[#a89779] text-gray-900'
-                                            }`}>
+                                            <button className={`w-full py-2 rounded-lg text-xs font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer ${theme
+                                                    ? 'bg-[#3E3F29] hover:bg-[#2e2f1f] text-white'
+                                                    : 'bg-[#BCA88D] hover:bg-[#a89779] text-gray-900'
+                                                }`}>
                                                 <FaEdit />
                                                 Edit
                                             </button>

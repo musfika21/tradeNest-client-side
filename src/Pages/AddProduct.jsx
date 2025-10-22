@@ -207,6 +207,7 @@ const AddProduct = () => {
                 setIsLoading(false);
 
                 if (response.data.insertedId) {
+                    navigate("/my-Products");
                     toast.success("Product Added Successfully!", {
                         duration: 3000,
                         position: 'top-right',
@@ -228,10 +229,6 @@ const AddProduct = () => {
                     form.reset();
                     setErrors({});
                     setTouched({});
-
-                    setTimeout(() => {
-                        navigate("/");
-                    }, 1000);
                 } else {
                     toast.error("Failed to add Product", {
                         duration: 3000,

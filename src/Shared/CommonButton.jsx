@@ -13,7 +13,7 @@ const CommonButton = ({ children, onClick, disabled, className = "", type = "but
             className={`border ${
               theme 
               ? "border-[#3E3F29] hover:bg-[#3E3F29] hover:text-white text-[#3E3F29]" 
-              : "border-[#7D8D86] hover:text-black text-[#7D8D86] hover:bg-[#7D8D86]"
+              : "border-[#7D8D86] hover:text-white text-[#7D8D86] hover:bg-[#7D8D86]"
             } py-2 px-4 rounded transition-colors duration-300 hover:opacity-80 w-auto bg-transparent normal-case font-bold
             ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
             ${className}`}

@@ -1,22 +1,27 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CommonButton from '../../Shared/CommonButton';
 import SocialLogins from '../../Shared/SocialLogins';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { IoEye, IoEyeOff, IoPerson } from 'react-icons/io5';
 import { MdEmail } from 'react-icons/md';
 import { IoMdPhotos } from 'react-icons/io';
-import Swal from 'sweetalert2';
-import { toast } from 'react-toastify';
 import useAuth from '../../CustomHooks/UseAuth';
+import toast from 'react-hot-toast';
+import DemoUser from '../../Shared/DemoUser';
 
 const Register = () => {
     const { createUser, updateUserInfo, setUser, theme } = useAuth();
-    const [errorMessage, setErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname === "/register-user") {
+            window.document.title = "Register | TradeNest";
+        }
+    }, [location.pathname]);
 
     const validationOfPassword = (password) => {
         if (!password) return 'Password is Required';
@@ -96,17 +101,28 @@ const Register = () => {
                     setUser((currentUser) => {
                         currentUser.displayName = name;
                         currentUser.photoURL = photo;
-                        Swal.fire({
-                            title: 'Successfully Registered',
-                            icon: 'success',
-                            draggable: true,
+                        toast.success("Registered Successfully!", {
+                            duration: 3000,
+                            position: 'top-right',
+                            style: {
+                                background: theme ? 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)' : 'linear-gradient(135deg, #064e3b 0%, #065f46 100%)',
+                                color: theme ? '#166534' : '#d1fae5',
+                                border: `2px solid ${theme ? '#86efac' : '#10b981'}`,
+                                padding: '16px',
+                                borderRadius: '12px',
+                                boxShadow: theme ? '0 4px 12px rgba(34, 197, 94, 0.2)' : '0 4px 12px rgba(16, 185, 129, 0.3)',
+                                fontWeight: '600',
+                            },
+                            iconTheme: {
+                                primary: theme ? '#22c55e' : '#10b981',
+                                secondary: theme ? '#f0fdf4' : '#064e3b',
+                            },
                         });
                         navigate(location.state || '/');
                     });
                 });
             })
             .catch((error) => {
-                setErrorMessage(error.message);
                 toast.error(error.message, {
                     position: 'top-right',
                     className: theme
@@ -300,8 +316,9 @@ const Register = () => {
                     <div className={`flex-1 h-px ${theme ? 'bg-[#7D8D86]/30' : 'bg-[#BCA88D]/30'}`} />
                 </div>
 
-                <div className='flex justify-center'>
+                <div className='flex justify-between flex-col md:flex-row w-1/2 mx-auto'>
                     <SocialLogins />
+                    <DemoUser/>
                 </div>
 
                 {/* Login link */}

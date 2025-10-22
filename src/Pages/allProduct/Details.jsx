@@ -3,11 +3,11 @@ import { useLoaderData, useNavigate } from 'react-router';
 import Modal from 'react-modal';
 import axios from 'axios';
 import useAuth from '../../CustomHooks/UseAuth';
-import { toast } from 'react-toastify';
 import { LuMessageSquareWarning } from "react-icons/lu";
 import { FaStar, FaShoppingCart, FaBox } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import CommonButton from '../../Shared/CommonButton';
+import toast from 'react-hot-toast';
 
 Modal.setAppElement('#root');
 

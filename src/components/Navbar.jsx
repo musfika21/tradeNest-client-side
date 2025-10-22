@@ -234,7 +234,7 @@ const Navbar = () => {
                 {
                   user?.photoURL ? (
                     <img
-                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-full border-2 lg:border-3 ${theme ? 'border-[#3E3F29]' : 'border-[#7D8D86]'} transition-all duration-200 hover:scale-105`}
+                      className={`w-10 h-10 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-full border-2 lg:border-3 ${theme ? 'border-[#3E3F29]' : 'border-[#7D8D86]'} transition-all duration-200 hover:scale-105 object-cover`}
                       src={user?.photoURL}
                       alt="profile picture"
                     />

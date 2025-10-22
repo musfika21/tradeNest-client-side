@@ -37,10 +37,6 @@ const AuthProvider = ({ children }) => {
             return !prevDark;
         });
     };
-    useEffect(() => {
-        document.body.className = theme ? 'dark' : '';
-    }, [theme]);
-    
 
     // create a user with email and password
     const createUser = (email, password) => {
@@ -61,6 +57,22 @@ const AuthProvider = ({ children }) => {
             displayName: displayName || auth.currentUser?.displayName,
             photoURL: photoURL || auth.currentUser?.photoURL
         });
+    };
+
+    // Demo Login User - Fixed Version
+    const loginAsDemoUser = async () => {
+        setLoading(true);
+
+        const demoEmail = import.meta.env.VITE_DEMO_USER_EMAIL;
+        const demoPassword = import.meta.env.VITE_DEMO_USER_PASSWORD;
+
+        try {
+            const result = await signInWithEmailAndPassword(auth, demoEmail, demoPassword);
+            return result;
+        } catch (e) {
+            setLoading(false);
+
+        }
     };
 
     // Google Login User
@@ -89,7 +101,7 @@ const AuthProvider = ({ children }) => {
         return () => {
             unsubscribe();
         }
-    }, [])
+    }, []);
 
     // User Info
     const userInfo = {
@@ -99,6 +111,7 @@ const AuthProvider = ({ children }) => {
         updateUserInfo,
         loginUser,
         GoogleLogin,
+        loginAsDemoUser,
         resetPassword,
         loading,
         setLoading,

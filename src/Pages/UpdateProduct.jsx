@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import CommonButton from "../Shared/CommonButton";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import useAuth from "../../CustomHooks/UseAuth";
 import axios from "axios";
@@ -9,6 +9,8 @@ import { BsGrid3X3GapFill } from 'react-icons/bs';
 import { FaTable } from 'react-icons/fa';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import CommonButton from "../../Shared/CommonButton";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const AllProducts = () => {
     const { setLoading, theme } = useAuth();
@@ -82,7 +84,7 @@ const AllProducts = () => {
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer ${view === "card"
                                     ? `${theme ? 'border border-[#3E3F29] bg-white text-[#3E3F29]' : 'border border-[#7D8D86] bg-[#7D8D86] text-black'}`
                                     : `${theme ? 'text-[#3E3F29] hover:opacity-80' : 'text-[#7D8D86] hover:opacity-80'}`
-                                }`}
+                                    }`}
                             >
                                 <BsGrid3X3GapFill className="text-sm" />
                                 <span>Card</span>
@@ -92,7 +94,7 @@ const AllProducts = () => {
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer ${view === "table"
                                     ? `${theme ? 'border border-[#3E3F29] bg-white text-[#3E3F29]' : 'border border-[#7D8D86] bg-[#7D8D86] text-black'}`
                                     : `${theme ? 'text-[#3E3F29] hover:opacity-80' : 'text-[#7D8D86] hover:opacity-80'}`
-                                }`}
+                                    }`}
                             >
                                 <FaTable className="text-sm" />
                                 <span>Table</span>
@@ -132,15 +134,14 @@ const AllProducts = () => {
                                             <button
                                                 key={page}
                                                 onClick={() => goToPage(page)}
-                                                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${
-                                                    page === currentPage
-                                                        ? theme 
-                                                            ? 'border-[#3E3F29] bg-[#3E3F29] text-white' 
+                                                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${page === currentPage
+                                                        ? theme
+                                                            ? 'border-[#3E3F29] bg-[#3E3F29] text-white'
                                                             : 'border-[#7D8D86] bg-[#7D8D86] text-black'
-                                                        : theme 
-                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white' 
+                                                        : theme
+                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white'
                                                             : 'border-[#7D8D86] text-[#7D8D86] hover:bg-[#7D8D86] hover:text-black'
-                                                }`}
+                                                    }`}
                                             >
                                                 {page}
                                             </button>
@@ -150,11 +151,10 @@ const AllProducts = () => {
                                             {currentPage > 2 && (
                                                 <button
                                                     onClick={() => goToPage(1)}
-                                                    className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${
-                                                        theme 
-                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white' 
+                                                    className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${theme
+                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white'
                                                             : 'border-[#7D8D86] text-[#7D8D86] hover:bg-[#7D8D86] hover:text-black'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     1
                                                 </button>
@@ -167,15 +167,14 @@ const AllProducts = () => {
                                                         <button
                                                             key={page}
                                                             onClick={() => goToPage(page)}
-                                                            className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${
-                                                                page === currentPage
-                                                                    ? theme 
-                                                                        ? 'border-[#3E3F29] bg-[#3E3F29] text-white' 
+                                                            className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${page === currentPage
+                                                                    ? theme
+                                                                        ? 'border-[#3E3F29] bg-[#3E3F29] text-white'
                                                                         : 'border-[#7D8D86] bg-[#7D8D86] text-black'
-                                                                    : theme 
-                                                                        ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white' 
+                                                                    : theme
+                                                                        ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white'
                                                                         : 'border-[#7D8D86] text-[#7D8D86] hover:bg-[#7D8D86] hover:text-black'
-                                                            }`}
+                                                                }`}
                                                         >
                                                             {page}
                                                         </button>
@@ -188,11 +187,10 @@ const AllProducts = () => {
                                             {currentPage < totalPages - 1 && (
                                                 <button
                                                     onClick={() => goToPage(totalPages)}
-                                                    className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${
-                                                        theme 
-                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white' 
+                                                    className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${theme
+                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white'
                                                             : 'border-[#7D8D86] text-[#7D8D86] hover:bg-[#7D8D86] hover:text-black'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {totalPages}
                                                 </button>
@@ -217,10 +215,10 @@ const AllProducts = () => {
                 {/* Table View */}
                 {view === "table" && (
                     <>
-                        <div className={`overflow-x-auto rounded-lg shadow-lg ${theme ? 'bg-white' : 'bg-gray-800'}`}>
-                            <table className={`min-w-[600px] w-full ${theme ? 'bg-white' : 'bg-gray-800'}`}>
+                        <div className={`overflow-x-auto rounded-lg shadow-lg ${theme ? 'bg-white' : 'bg-[#343434]'}`}>
+                            <table className={`min-w-[600px] w-full ${theme ? 'bg-white' : 'bg-[#343434]'}`}>
                                 <thead>
-                                    <tr className={`${theme ? 'bg-gray-100 text-[#3E3F29] border-b-2 border-[#3E3F29]' : 'bg-gray-700 text-[#7D8D86] border-b-2 border-[#7D8D86]'} text-xs sm:text-sm font-semibold`}>
+                                    <tr className={`${theme ? 'bg-gray-100 text-[#3E3F29] border-b-2 border-[#3E3F29]' : 'bg-[#2f2f2f] text-[#7D8D86] border-b-2 border-[#7D8D86]'} text-xs sm:text-sm font-semibold`}>
                                         <th className="p-4 text-left w-20">Photo</th>
                                         <th className="p-4 text-left">Name</th>
                                         <th className="p-4 text-left">Category</th>
@@ -236,14 +234,18 @@ const AllProducts = () => {
                                             key={product._id}
                                             className={`border-b transition-colors duration-200 ${theme
                                                 ? 'border-gray-200 hover:bg-gray-50'
-                                                : 'border-gray-700 hover:bg-gray-700'
-                                            }`}
+                                                : 'border-black hover:bg-[#454545]'
+                                                }`}
                                         >
                                             <td className="p-4 align-middle">
                                                 <div className="w-12 sm:w-14 md:w-16 lg:w-18 xl:w-20">
-                                                    <img
+                                                    <LazyLoadImage
                                                         src={product.photo}
                                                         alt={product.name}
+                                                        effect="blur"
+                                                        wrapperProps={{
+                                                            style: { transitionDelay: "1s" },
+                                                        }}
                                                         className="w-full h-full object-cover rounded-md shadow-sm"
                                                     />
                                                 </div>
@@ -258,7 +260,7 @@ const AllProducts = () => {
                                                 <span className={`px-2 py-1 rounded text-xs font-semibold ${theme
                                                     ? 'bg-yellow-100 text-yellow-800'
                                                     : 'bg-yellow-900 text-yellow-200'
-                                                }`}>
+                                                    }`}>
                                                     ⭐ {product.rating}
                                                 </span>
                                             </td>
@@ -268,11 +270,6 @@ const AllProducts = () => {
                                                         <CommonButton className="flex items-center gap-2 py-2 px-3 text-xs sm:text-sm">
                                                             <CgNotes className="text-sm" />
                                                             Details
-                                                        </CommonButton>
-                                                    </Link>
-                                                    <Link to={`/update-Product/${product._id}`}>
-                                                        <CommonButton className="flex items-center gap-2 py-2 px-3 text-xs sm:text-sm">
-                                                            Update
                                                         </CommonButton>
                                                     </Link>
                                                 </div>
@@ -305,15 +302,14 @@ const AllProducts = () => {
                                             <button
                                                 key={page}
                                                 onClick={() => goToPage(page)}
-                                                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${
-                                                    page === currentPage
-                                                        ? theme 
-                                                            ? 'border-[#3E3F29] bg-[#3E3F29] text-white' 
+                                                className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${page === currentPage
+                                                        ? theme
+                                                            ? 'border-[#3E3F29] bg-[#3E3F29] text-white'
                                                             : 'border-[#7D8D86] bg-[#7D8D86] text-black'
-                                                        : theme 
-                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white' 
+                                                        : theme
+                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white'
                                                             : 'border-[#7D8D86] text-[#7D8D86] hover:bg-[#7D8D86] hover:text-black'
-                                                }`}
+                                                    }`}
                                             >
                                                 {page}
                                             </button>
@@ -323,11 +319,10 @@ const AllProducts = () => {
                                             {currentPage > 2 && (
                                                 <button
                                                     onClick={() => goToPage(1)}
-                                                    className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${
-                                                        theme 
-                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white' 
+                                                    className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${theme
+                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white'
                                                             : 'border-[#7D8D86] text-[#7D8D86] hover:bg-[#7D8D86] hover:text-black'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     1
                                                 </button>
@@ -340,15 +335,14 @@ const AllProducts = () => {
                                                         <button
                                                             key={page}
                                                             onClick={() => goToPage(page)}
-                                                            className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${
-                                                                page === currentPage
-                                                                    ? theme 
-                                                                        ? 'border-[#3E3F29] bg-[#3E3F29] text-white' 
+                                                            className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${page === currentPage
+                                                                    ? theme
+                                                                        ? 'border-[#3E3F29] bg-[#3E3F29] text-white'
                                                                         : 'border-[#7D8D86] bg-[#7D8D86] text-black'
-                                                                    : theme 
-                                                                        ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white' 
+                                                                    : theme
+                                                                        ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white'
                                                                         : 'border-[#7D8D86] text-[#7D8D86] hover:bg-[#7D8D86] hover:text-black'
-                                                            }`}
+                                                                }`}
                                                         >
                                                             {page}
                                                         </button>
@@ -361,11 +355,10 @@ const AllProducts = () => {
                                             {currentPage < totalPages - 1 && (
                                                 <button
                                                     onClick={() => goToPage(totalPages)}
-                                                    className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${
-                                                        theme 
-                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white' 
+                                                    className={`px-2 sm:px-3 py-1 sm:py-2 rounded-lg font-medium transition-all text-xs sm:text-sm border ${theme
+                                                            ? 'border-[#3E3F29] text-[#3E3F29] hover:bg-[#3E3F29] hover:text-white'
                                                             : 'border-[#7D8D86] text-[#7D8D86] hover:bg-[#7D8D86] hover:text-black'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {totalPages}
                                                 </button>
