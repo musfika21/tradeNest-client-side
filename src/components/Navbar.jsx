@@ -185,8 +185,8 @@ const Navbar = () => {
   }
 
   return (
-    <div className={`w-full fixed left-0 right-0 top-0 z-50 ${theme ? 'bg-[#BCA88D]/80 text-black' : 'bg-[#202124]/80 text-white'} backdrop-blur-md border-b ${theme ? 'border-gray-300/20' : 'border-gray-700/20'} shadow-lg`}>
-      <nav className="max-w-11/12 mx-auto flex justify-between items-center py-3 px-4">
+    <div className={`w-full fixed left-0 right-0 top-0 z-50 ${theme ? 'bg-[#F1F0E4]/60 text-black' : 'bg-[#202124]/80 text-white'} backdrop-blur-md border-b ${theme ? 'border-[#3E3F29]' : 'border-[#BCA88D]'} shadow-lg`}>
+      <nav className="max-w-11/12 mx-auto flex justify-between items-center py-2 px-4">
 
         {/* LOGO */}
         <div className="flex items-center gap-4">

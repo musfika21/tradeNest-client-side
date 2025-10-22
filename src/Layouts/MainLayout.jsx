@@ -12,7 +12,7 @@ const MainLayout = () => {
     return (
         <div>
             <Navbar/>
-            <div className={`pt-16 xl:pt-19 min-h-[calc(100vh-273px)] font ${theme ? 'bg-[#F1F0E4] text-black' : 'bg-[#1F1F1F] text-white'}`}>
+            <div className={`pt-16 xl:pt-17 min-h-[calc(100vh-273px)] font ${theme ? 'bg-[#F1F0E4] text-black' : 'bg-[#1F1F1F] text-white'}`}>
                 <Outlet/>
                 <ToastContainer/>
             </div>
