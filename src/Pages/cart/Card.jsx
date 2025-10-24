@@ -141,6 +141,24 @@ const Card = ({ product, onDelete }) => {
                     {name || 'Unnamed Product'}
                 </h3>
 
+                 {/* Purchased Amount */}
+                {purchaseAmount && (
+                    <div className={`mb-3 p-3 rounded-lg ${
+                        theme ? 'bg-blue-50 border border-blue-200' : 'bg-blue-900/20 border border-blue-500/30'
+                    }`}>
+                        <p className={`text-xs font-medium mb-1 ${
+                            theme ? 'text-blue-600' : 'text-blue-400'
+                        }`}>
+                            Purchased Quantity
+                        </p>
+                        <p className={`text-2xl font-bold ${
+                            theme ? 'text-blue-700' : 'text-blue-300'
+                        }`}>
+                            {purchaseAmount} {purchaseAmount > 1 ? 'units' : 'unit'}
+                        </p>
+                    </div>
+                )}
+
                 {/* Description */}
                 <p className={`text-sm mb-4 line-clamp-2 leading-relaxed ${
                     theme ? 'text-gray-600' : 'text-gray-400'
